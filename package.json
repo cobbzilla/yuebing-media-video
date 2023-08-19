@@ -1,6 +1,6 @@
 {
   "name": "yuebing-media-video",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "type": "module",
   "description": "Media driver for yuebing video content",
   "keywords": [
