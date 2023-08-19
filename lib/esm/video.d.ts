@@ -1,3 +1,2 @@
-import { MediaPlugin, ParsedProfile } from "yuebing-media";
-export type VideoOperation = (infile: string, profile: ParsedProfile, outfile: string) => Promise<string[]>;
+import { MediaPlugin } from "yuebing-media";
 export declare const mediaDriver: MediaPlugin;

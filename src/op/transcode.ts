@@ -1,6 +1,10 @@
-import { ParsedProfile } from "yuebing-media";
+import { ApplyProfileResponse, MediaOperationFunc, ParsedProfile } from "yuebing-media";
 
-export const transcode = async (infile: string, profile: ParsedProfile, outfile: string) => {
+export const transcode: MediaOperationFunc = async (
+    infile: string,
+    profile: ParsedProfile,
+    outfile: string,
+): Promise<ApplyProfileResponse> => {
     const args = [];
     args.push("-i");
     args.push(infile);
@@ -22,5 +26,5 @@ export const transcode = async (infile: string, profile: ParsedProfile, outfile:
     args.push(profile.audioBitrate);
     args.push("-y");
     args.push(outfile);
-    return args;
+    return { args };
 };
