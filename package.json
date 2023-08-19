@@ -55,7 +55,7 @@
     "prettier": "^3.0.0",
     "tslint-config-prettier": "^1.18.0",
     "typescript": "^5.1.6",
-    "yuebing-media": "^1.0.14",
-    "yuebing-model": "^2.6.31"
+    "yuebing-media": "^1.0.15",
+    "yuebing-model": "^2.6.32"
   }
 }
