@@ -32,6 +32,9 @@ devDependencies:
   mobiletto-orm:
     specifier: ^2.2.36
     version: 2.2.36
+  mobiletto-orm-typedef:
+    specifier: ^2.4.5
+    version: 2.4.5
   mocha:
     specifier: ^10.2.0
     version: 10.2.0
@@ -45,11 +48,11 @@ devDependencies:
     specifier: ^5.1.6
     version: 5.1.6
   yuebing-media:
-    specifier: ^1.0.21
-    version: 1.0.21
+    specifier: ^1.0.24
+    version: 1.0.24
   yuebing-model:
-    specifier: ^2.7.1
-    version: 2.7.1
+    specifier: ^2.7.2
+    version: 2.7.2
 
 packages:
 
@@ -876,6 +879,16 @@ packages:
     resolution: {integrity: sha512-Bdboy+l7tA3OGW6FjyFHWkP5LuByj1Tk33Ljyq0axyzdk9//JSi2u3fP1QSmd1KNwq6VOKYGlAu87CisVir6Pw==}
     dev: true
 
+  /json-stable-stringify@0.0.1:
+    resolution: {integrity: sha512-nKtD/Qxm7tWdZqJoldEC7fF0S41v0mWbeaXG3637stOWfyGxTgWTYE2wtfKmjzpvxv2MA2xzxsXOIiwUpkX6Qw==}
+    dependencies:
+      jsonify: 0.0.1
+    dev: true
+
+  /jsonify@0.0.1:
+    resolution: {integrity: sha512-2/Ki0GcmuqSrgFyelQq9M05y7PS0mEwuIzrf3f1fPqkVDVRvZrPZtVSMHxdgo8Aq0sxAOb/cr2aqqA3LeWHVPg==}
+    dev: true
+
   /levn@0.4.1:
     resolution: {integrity: sha512-+bT2uH4E5LGE7h/n3evcS/sQlJXCpIp6ym8OWJ5eV6+67Dsql/LaaT7qJBAt2rzfoa/5QBGBhxDix1dMt2kQKQ==}
     engines: {node: '>= 0.8.0'}
@@ -940,6 +953,13 @@ packages:
     engines: {node: '>=10'}
     dependencies:
       brace-expansion: 2.0.1
+    dev: true
+
+  /mobiletto-orm-typedef@2.4.5:
+    resolution: {integrity: sha512-EOP4ETo+ggcssH9JZrzkwxYV1TJ+prcTHzcNJyVpby2FHUHSSn9sCr0TlKGhTi1Ris8snJlZu8fvJ9/y5iJ4Ow==}
+    dependencies:
+      shasum: 1.0.2
+      uuid: 9.0.0
     dev: true
 
   /mobiletto-orm@2.2.36:
@@ -1144,6 +1164,21 @@ packages:
       randombytes: 2.1.0
     dev: true
 
+  /sha.js@2.4.11:
+    resolution: {integrity: sha512-QMEp5B7cftE7APOjk5Y6xgrbWu+WkLVQwk8JNjZ8nKRciZaByEW6MubieAiToS7+dwvrjGhH8jRXz3MVd0AYqQ==}
+    hasBin: true
+    dependencies:
+      inherits: 2.0.4
+      safe-buffer: 5.2.1
+    dev: true
+
+  /shasum@1.0.2:
+    resolution: {integrity: sha512-UTzHm/+AzKfO9RgPgRpDIuMSNie1ubXRaljjlhFMNGYoG7z+rm9AHLPMf70R7887xboDH9Q+5YQbWKObFHEAtw==}
+    dependencies:
+      json-stable-stringify: 0.0.1
+      sha.js: 2.4.11
+    dev: true
+
   /shebang-command@2.0.0:
     resolution: {integrity: sha512-kHxr2zZpYtdmrN1qDjrrX/Z1rR1kG8Dx+gkpK1G4eXmvXswmcE1hTWBWYUzlraYw1/yZp6YuDY77YtvbN0dmDA==}
     engines: {node: '>=8'}
@@ -1251,6 +1286,11 @@ packages:
       punycode: 2.3.0
     dev: true
 
+  /uuid@9.0.0:
+    resolution: {integrity: sha512-MXcSTerfPa4uqyzStbRoTgt5XIe3x5+42+q1sDuy3R5MDk66URdLMOZe5aPX/SQd+kuYAh0FdP/pO28IkQyTeg==}
+    hasBin: true
+    dev: true
+
   /which@2.0.2:
     resolution: {integrity: sha512-BLI3Tl1TW3Pvl70l3yq3Y64i+awpwXqsGBYWkkqMtnbXgrMD+yj7rhW0kuEDxzJaYXGjEW5ogapKNMEKNMjibA==}
     engines: {node: '>= 8'}
@@ -1318,10 +1358,10 @@ packages:
     engines: {node: '>=10'}
     dev: true
 
-  /yuebing-media@1.0.21:
-    resolution: {integrity: sha512-X5fEXNSpqTXRAdTh/jd+/DhO8FuliJ/bwjTyCuEo3bFxyzR/kQWocljx17Rap+SsJJM1IsdUbDmcLQ0tmZNcKw==}
+  /yuebing-media@1.0.24:
+    resolution: {integrity: sha512-x99Hd+/7u4HFe+KTpwx/iV+zZKZs0XhxO6yra62/f7wV24lxQg7rxQlYvPMH/aDnYCbMPXX1etCKJeWsTr5apw==}
     dev: true
 
-  /yuebing-model@2.7.1:
-    resolution: {integrity: sha512-4xcaCOTx6a2Oja1r/R02NqBsW57B21FWUpAvZGZ0npuv4115+RKnfzMl+evDT8sgZt1b/rNKiATgWJ8xMFyCeA==}
+  /yuebing-model@2.7.2:
+    resolution: {integrity: sha512-We79b6hCeClSBvwIyDDSDSn3990Gl6f9kAUcoVjJL/3wzl4qqzcJWvJg1k9Ej6wMumq0wXdJIyyKOXKLooXpfQ==}
     dev: true
