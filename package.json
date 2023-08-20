@@ -1,6 +1,6 @@
 {
   "name": "yuebing-media-video",
-  "version": "1.0.30",
+  "version": "1.0.31",
   "type": "module",
   "description": "Media driver for yuebing video content",
   "keywords": [
@@ -56,7 +56,7 @@
     "prettier": "^3.0.0",
     "tslint-config-prettier": "^1.18.0",
     "typescript": "^5.1.6",
-    "yuebing-media": "^1.0.37",
-    "yuebing-model": "^2.7.12"
+    "yuebing-media": "^1.0.38",
+    "yuebing-model": "^2.7.13"
   }
 }
