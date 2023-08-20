@@ -48,11 +48,11 @@ devDependencies:
     specifier: ^5.1.6
     version: 5.1.6
   yuebing-media:
-    specifier: ^1.0.25
-    version: 1.0.25
+    specifier: ^1.0.26
+    version: 1.0.26
   yuebing-model:
-    specifier: ^2.7.2
-    version: 2.7.2
+    specifier: ^2.7.3
+    version: 2.7.3
 
 packages:
 
@@ -1358,10 +1358,10 @@ packages:
     engines: {node: '>=10'}
     dev: true
 
-  /yuebing-media@1.0.25:
-    resolution: {integrity: sha512-+t3kfiOKiAcSmvGl0ifFRMMKyIE1KVhM2rFMtwY/KoBaHyxc+QsgGAue+FsThj6+YXMSEe8OOR5RWi5cHniBjQ==}
+  /yuebing-media@1.0.26:
+    resolution: {integrity: sha512-aqZcITZHLIOIIISunA0HIj4+GxB6gsGShLQV6R/F4v8GgoQHCWOtFBJPNWLkwCGGYLZUw/ku2BiTwqWHiJP6Zw==}
     dev: true
 
-  /yuebing-model@2.7.2:
-    resolution: {integrity: sha512-We79b6hCeClSBvwIyDDSDSn3990Gl6f9kAUcoVjJL/3wzl4qqzcJWvJg1k9Ej6wMumq0wXdJIyyKOXKLooXpfQ==}
+  /yuebing-model@2.7.3:
+    resolution: {integrity: sha512-YkYsB7w1xWaBIxjqRePF75l5vGuTM0GNrWpjNZG9Rpcnk/vzt18cNFtq3MpMTxXMzurodiqHpKnOS5yuvnPp7w==}
     dev: true
