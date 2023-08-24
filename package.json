@@ -1,6 +1,6 @@
 {
   "name": "yuebing-media-video",
-  "version": "1.0.37",
+  "version": "1.1.0",
   "type": "module",
   "description": "Media driver for yuebing video content",
   "keywords": [
@@ -53,15 +53,15 @@
     "eslint-config-prettier": "^8.8.0",
     "handlebars": "^4.7.8",
     "mobiletto-base": "^2.1.1",
-    "mobiletto-orm": "^2.2.43",
-    "mobiletto-orm-typedef": "^2.4.8",
+    "mobiletto-orm": "^2.2.44",
+    "mobiletto-orm-typedef": "^2.4.9",
     "mobiletto-orm-typedef-gen": "^2.3.45",
     "mocha": "^10.2.0",
     "prettier": "^3.0.0",
     "tslint-config-prettier": "^1.18.0",
     "typescript": "^5.1.6",
-    "yuebing-media": "^1.1.1",
-    "yuebing-model": "^2.7.20",
+    "yuebing-media": "^1.1.4",
+    "yuebing-model": "^2.7.21",
     "yuebing-util": "^1.0.0"
   }
 }

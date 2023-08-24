@@ -1,6 +1,8 @@
-import { ApplyProfileResponse, MediaOperationFunc, ParsedProfile } from "yuebing-media";
+import { ApplyProfileResponse, MediaOperationFunc, MediaOperationType, ParsedProfile } from "yuebing-media";
 import { MobilettoOrmFieldDefConfigs, MobilettoOrmTypeDef } from "mobiletto-orm-typedef";
 import { VideoProfileTranscodeType } from "../type/VideoProfileTranscodeType.js";
+import { OP_CONFIG_TYPES, OP_MAP, OPERATIONS } from "../operations.js";
+import { ffmpegSizeConfig } from "../properties.js";
 
 const FFMPEG_BITRATE_REGEX = /^\d+([bkMG]|(\.\d+[kMG]))?$/;
 
@@ -49,17 +51,25 @@ export const VideoTranscodeTypeDefFields: MobilettoOrmFieldDefConfigs = {
 export const VideoTranscodeTypeDef: MobilettoOrmTypeDef = new MobilettoOrmTypeDef({
     typeName: "VideoProfileTranscode",
     fields: VideoTranscodeTypeDefFields,
+}).extend({
+    fields: { videoSize: ffmpegSizeConfig },
 });
+OP_CONFIG_TYPES.transcode = VideoTranscodeTypeDef;
+
+export const VideoTranscodeOperation: MediaOperationType = {
+    name: "transcode",
+    command: "ffmpeg",
+    minFileSize: 1024 * 64,
+};
+OPERATIONS.transcode = VideoTranscodeOperation;
 
 export const transcode: MediaOperationFunc = async (
     infile: string,
     profile: ParsedProfile,
     outfile: string,
 ): Promise<ApplyProfileResponse> => {
-    if (!profile.operationConfig) throw new Error(`transcode: profile.operationConfig not defined`);
-
-    const config = JSON.parse(profile.operationConfig) as VideoProfileTranscodeType;
-    if (!config) throw new Error(`transcode: no operationConfig found on profile: ${profile.name}`);
+    if (!profile.operationConfigObject) throw new Error(`transcode: profile.operationConfigObject not defined`);
+    const config = profile.operationConfigObject as VideoProfileTranscodeType;
 
     const args: string[] = [];
     args.push("-i");
@@ -84,3 +94,4 @@ export const transcode: MediaOperationFunc = async (
     args.push(outfile);
     return { args };
 };
+OP_MAP.transcode = transcode;

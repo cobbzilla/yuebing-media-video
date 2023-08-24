@@ -1,6 +1,8 @@
-import { ApplyProfileResponse, MediaOperationFunc, ParsedProfile } from "yuebing-media";
+import { ApplyProfileResponse, MediaOperationFunc, MediaOperationType, ParsedProfile } from "yuebing-media";
 import { MobilettoOrmFieldDefConfigs, MobilettoOrmTypeDef } from "mobiletto-orm-typedef";
 import { VideoProfileFirstThumbnailType } from "../type/VideoProfileFirstThumbnailType.js";
+import { OP_CONFIG_TYPES, OP_MAP, OPERATIONS } from "../operations.js";
+import { ffmpegSizeConfig } from "../properties.js";
 
 export const VideoFirstThumbnailTypeDefFields: MobilettoOrmFieldDefConfigs = {
     size: {
@@ -17,7 +19,17 @@ export const VideoFirstThumbnailTypeDefFields: MobilettoOrmFieldDefConfigs = {
 export const VideoFirstThumbnailTypeDef: MobilettoOrmTypeDef = new MobilettoOrmTypeDef({
     typeName: "VideoProfileFirstThumbnail",
     fields: VideoFirstThumbnailTypeDefFields,
+}).extend({
+    fields: { size: ffmpegSizeConfig },
 });
+OP_CONFIG_TYPES.firstThumbnail = VideoFirstThumbnailTypeDef;
+
+export const VideoFirstThumbnailOperation: MediaOperationType = {
+    name: "firstThumbnail",
+    command: "ffmpeg",
+    minFileSize: 64,
+};
+OPERATIONS.firstThumbnail = VideoFirstThumbnailOperation;
 
 const DEFAULT_FIRST_THUMBNAIL_OFFSET = 3;
 
@@ -26,10 +38,8 @@ export const firstThumbnail: MediaOperationFunc = async (
     profile: ParsedProfile,
     outfile: string,
 ): Promise<ApplyProfileResponse> => {
-    if (!profile.operationConfig) throw new Error(`transcode: profile.operationConfig not defined`);
-
-    const config = JSON.parse(profile.operationConfig) as VideoProfileFirstThumbnailType;
-    if (!config) throw new Error(`thumbnails: no operationConfig found on profile: ${profile.name}`);
+    if (!profile.operationConfigObject) throw new Error(`firstThumbnail: profile.operationConfigObject not defined`);
+    const config = profile.operationConfigObject as VideoProfileFirstThumbnailType;
 
     const offset = config.offset && config.offset > 0 ? config.offset : DEFAULT_FIRST_THUMBNAIL_OFFSET;
     const args = [];
@@ -46,3 +56,4 @@ export const firstThumbnail: MediaOperationFunc = async (
     args.push(outfile);
     return { args };
 };
+OP_MAP.firstThumbnail = firstThumbnail;

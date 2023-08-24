@@ -36,11 +36,11 @@ devDependencies:
     specifier: ^2.1.1
     version: 2.1.1
   mobiletto-orm:
-    specifier: ^2.2.43
-    version: 2.2.43
+    specifier: ^2.2.44
+    version: 2.2.44
   mobiletto-orm-typedef:
-    specifier: ^2.4.8
-    version: 2.4.8
+    specifier: ^2.4.9
+    version: 2.4.9
   mobiletto-orm-typedef-gen:
     specifier: ^2.3.45
     version: 2.3.45
@@ -57,11 +57,11 @@ devDependencies:
     specifier: ^5.1.6
     version: 5.1.6
   yuebing-media:
-    specifier: ^1.1.1
-    version: 1.1.1
+    specifier: ^1.1.4
+    version: 1.1.4
   yuebing-model:
-    specifier: ^2.7.20
-    version: 2.7.20
+    specifier: ^2.7.21
+    version: 2.7.21
   yuebing-util:
     specifier: ^1.0.0
     version: 1.0.0
@@ -1163,15 +1163,15 @@ packages:
     resolution: {integrity: sha512-jndO8eQWx8kRvYSQIgpmvTlNisiBME5gJLQxSMJOAm21kNA0+R2lDue9Zyx0MoVK29CdPYV+cYdqfdcsoMGgCw==}
     dev: true
 
-  /mobiletto-orm-typedef@2.4.8:
-    resolution: {integrity: sha512-UNS1RiIgJ8mmvMWAo8QGCFh7TOxGGT4EvxB/vmb3o2qmJPpvb/nhBQVQOF3nGQPAhXw9F5SyJCLUysigjSUddg==}
+  /mobiletto-orm-typedef@2.4.9:
+    resolution: {integrity: sha512-0jfhxpKnopwsrpihtVcJM5fZfi2G7shZ4xph6ZKlyohc+h5Pykp+Y3pCf5gSYwo35SWZcjQwDRSrdIFm57UH1g==}
     dependencies:
       shasum: 1.0.2
       uuid: 9.0.0
     dev: true
 
-  /mobiletto-orm@2.2.43:
-    resolution: {integrity: sha512-n+6teNUdXZ15ve/uQDqupKxwxw1GWXu4X71aILgLpLYVN3jXdDvW+an9MGL7YKEbmvMQj7e5+hErJ1hh8U4v0A==}
+  /mobiletto-orm@2.2.44:
+    resolution: {integrity: sha512-M39L+ZznoAf1YvfOmSvJZxDkB2Lsc1Hjo1jX8erjPKNM2L5Au8lDmU8qbrqRVVHjhDdPnKtNbnZnmRsPDFJLjA==}
     dev: true
 
   /mocha@10.2.0:
@@ -1662,12 +1662,12 @@ packages:
     engines: {node: '>=10'}
     dev: true
 
-  /yuebing-media@1.1.1:
-    resolution: {integrity: sha512-0+F/xw793Z4SsT44sK0Vt2ypxt6KT6TIOjHZjsSMxB5UfcwGm4D0O0TZ7/kR8R8TlkMDq3iY4VASv4sFIOtJFg==}
+  /yuebing-media@1.1.4:
+    resolution: {integrity: sha512-aHAP+/IY72jLhnO/LTChgkUwFEkq0pYOwdVjXhnJjcNgb7NMg6dXY5DVK3+EK+euU90r6gGe7IAbfGweEYuBtg==}
     dev: true
 
-  /yuebing-model@2.7.20:
-    resolution: {integrity: sha512-ZFg92NF2mJOjqT4H+VO2DcMOZOiX2JHfusvo2dPuwzMAcL0q28C01VOpHm4e8NDvuhiIjjaly6af4i2PDOR1MQ==}
+  /yuebing-model@2.7.21:
+    resolution: {integrity: sha512-7l55BkASqCjqgQOtImqVEZ72p+frAfvVnYoy1z6umYqZMrAt1b0gz9nhbdmf+PWspG8fTDKOqpQQP0AkKtruxg==}
     dev: true
 
   /yuebing-util@1.0.0:

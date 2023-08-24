@@ -1,6 +1,7 @@
 import { MobilettoOrmFieldDefConfigs, MobilettoOrmTypeDef } from "mobiletto-orm-typedef";
-import { ApplyProfileResponse, MediaOperationFunc, ParsedProfile } from "yuebing-media";
+import { ApplyProfileResponse, MediaOperationFunc, MediaOperationType, ParsedProfile } from "yuebing-media";
 import { VideoProfileDashType } from "../type/VideoProfileDashType.js";
+import { OP_CONFIG_TYPES, OP_MAP, OPERATIONS } from "../operations.js";
 
 export const VideoDashTypeDefFields: MobilettoOrmFieldDefConfigs = {
     manifestAssets: {
@@ -17,17 +18,33 @@ export const VideoDashTypeDefFields: MobilettoOrmFieldDefConfigs = {
 export const VideoDashTypeDef: MobilettoOrmTypeDef = new MobilettoOrmTypeDef({
     typeName: "VideoProfileDash",
     fields: VideoDashTypeDefFields,
+}).extend({
+    fields: {
+        subProfiles: {
+            required: true,
+            test: {
+                message: "err_video_dash_noSubProfiles",
+                valid: (v: Record<string, unknown>) => Array.isArray(v.subProfiles) && v.subProfiles.length > 0,
+            },
+        },
+    },
 });
+OP_CONFIG_TYPES.dash = VideoDashTypeDef;
+
+export const VideoDashOperation: MediaOperationType = {
+    name: "dash",
+    command: "ffmpeg",
+    minFileSize: 128,
+};
+OPERATIONS.dash = VideoDashOperation;
 
 export const dash: MediaOperationFunc = async (
     infile: string,
     profile: ParsedProfile,
     outfile: string,
 ): Promise<ApplyProfileResponse> => {
-    if (!profile.operationConfig) throw new Error(`transcode: profile.operationConfig not defined`);
-
-    const config = JSON.parse(profile.operationConfig) as VideoProfileDashType;
-    if (!config) throw new Error(`dash: no operationConfig found on profile: ${profile.name}`);
+    if (!profile.operationConfigObject) throw new Error(`dash: profile.operationConfigObject not defined`);
+    const config = profile.operationConfigObject as VideoProfileDashType;
 
     if (!profile.subProfileObjects || profile.subProfileObjects.length === 0) {
         throw new Error(`dash: no subProfiles specified`);
@@ -122,3 +139,4 @@ export const dash: MediaOperationFunc = async (
     args.push(outfile);
     return { args };
 };
+OP_MAP.dash = dash;

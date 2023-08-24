@@ -1,6 +1,8 @@
-import { ApplyProfileResponse, MediaOperationFunc, ParsedProfile } from "yuebing-media";
+import { ApplyProfileResponse, MediaOperationFunc, MediaOperationType, ParsedProfile } from "yuebing-media";
 import { MobilettoOrmFieldDefConfigs, MobilettoOrmTypeDef } from "mobiletto-orm-typedef";
 import { VideoProfileThumbnailsType } from "../type/VideoProfileThumbnailsType.js";
+import { OP_CONFIG_TYPES, OP_MAP, OPERATIONS } from "../operations.js";
+import { ffmpegSizeConfig } from "../properties.js";
 
 export const VideoThumbnailsTypeDefFields: MobilettoOrmFieldDefConfigs = {
     size: {
@@ -17,17 +19,25 @@ export const VideoThumbnailsTypeDefFields: MobilettoOrmFieldDefConfigs = {
 export const VideoThumbnailsTypeDef: MobilettoOrmTypeDef = new MobilettoOrmTypeDef({
     typeName: "VideoProfileThumbnails",
     fields: VideoThumbnailsTypeDefFields,
+}).extend({
+    fields: { size: ffmpegSizeConfig },
 });
+OP_CONFIG_TYPES.thumbnails = VideoThumbnailsTypeDef;
+
+export const VideoThumbnailsOperation: MediaOperationType = {
+    name: "thumbnails",
+    command: "ffmpeg",
+    minFileSize: 64,
+};
+OPERATIONS.thumbnails = VideoThumbnailsOperation;
 
 export const thumbnails: MediaOperationFunc = async (
     infile: string,
     profile: ParsedProfile,
     outfile: string,
 ): Promise<ApplyProfileResponse> => {
-    if (!profile.operationConfig) throw new Error(`transcode: profile.operationConfig not defined`);
-
-    const config = JSON.parse(profile.operationConfig) as VideoProfileThumbnailsType;
-    if (!config) throw new Error(`thumbnails: no operationConfig found on profile: ${profile.name}`);
+    if (!profile.operationConfigObject) throw new Error(`thumbnails: profile.operationConfigObject not defined`);
+    const config = profile.operationConfigObject as VideoProfileThumbnailsType;
 
     const args = [];
     args.push("-i");
@@ -40,3 +50,4 @@ export const thumbnails: MediaOperationFunc = async (
     args.push(outfile);
     return { args };
 };
+OP_MAP.thumbnails = thumbnails;
