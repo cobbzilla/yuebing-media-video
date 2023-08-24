@@ -1,9 +1,58 @@
-import { ApplyProfileResponse, MediaOperationFunc, MediaProperties, ParsedProfile } from "yuebing-media";
+import { ApplyProfileResponse, MediaOperationFunc, ParsedProfile } from "yuebing-media";
+import { MobilettoOrmFieldDefConfigs, MobilettoOrmTypeDef } from "mobiletto-orm-typedef";
+
+const FFMPEG_BITRATE_REGEX = /^\d+([bkMG]|(\.\d+[kMG]))?$/;
+
+export const VideoTranscodeTypeDefFields: MobilettoOrmFieldDefConfigs = {
+    videoCodec: {
+        required: true,
+        type: "string",
+        values: ["libx264", "libx265", "libwebp", "mpeg4", "wmv3"],
+    },
+    videoSize: {
+        required: true,
+        type: "string",
+    },
+    videoBitrate: {
+        required: true,
+        type: "string",
+        regex: FFMPEG_BITRATE_REGEX,
+    },
+    frameRate: {
+        required: true,
+        type: "number",
+        values: ["23.976", "24", "25", "30", "29.97", "50", "60"],
+    },
+    audioCodec: {
+        required: true,
+        type: "string",
+        values: ["aac", "mp3", "flac"],
+    },
+    audioChannels: {
+        required: true,
+        type: "string",
+        values: ["1", "2", "2.1", "5.1", "7.1", "9.1"],
+    },
+    audioRate: {
+        required: true,
+        type: "number",
+        values: [8000, 22050, 44100, 48000, 96000],
+    },
+    audioBitrate: {
+        required: true,
+        type: "string",
+        regex: FFMPEG_BITRATE_REGEX,
+    },
+};
+
+export const VideoTranscodeTypeDef: MobilettoOrmTypeDef = new MobilettoOrmTypeDef({
+    typeName: "VideoProfileTranscode",
+    fields: VideoTranscodeTypeDefFields,
+});
 
 export const transcode: MediaOperationFunc = async (
     infile: string,
     profile: ParsedProfile,
-    props: MediaProperties,
     outfile: string,
 ): Promise<ApplyProfileResponse> => {
     const config = profile.operationConfig;
@@ -12,6 +61,7 @@ export const transcode: MediaOperationFunc = async (
     args.push("-i");
     args.push(infile);
     args.push("-vcodec");
+    /*
     args.push("" + config.videoCodec);
     args.push("-s");
     args.push("" + config.videoSize);
@@ -27,6 +77,7 @@ export const transcode: MediaOperationFunc = async (
     args.push("" + config.audioRate);
     args.push("-b:a");
     args.push("" + config.audioBitrate);
+    */
     args.push("-y");
     args.push(outfile);
     return { args };
