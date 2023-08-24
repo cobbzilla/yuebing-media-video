@@ -1,5 +1,6 @@
 import { ApplyProfileResponse, MediaOperationFunc, ParsedProfile } from "yuebing-media";
 import { MobilettoOrmFieldDefConfigs, MobilettoOrmTypeDef } from "mobiletto-orm-typedef";
+import { VideoProfileFirstThumbnailType } from "../type/VideoProfileFirstThumbnailType.js";
 
 export const VideoFirstThumbnailTypeDefFields: MobilettoOrmFieldDefConfigs = {
     size: {
@@ -10,11 +11,6 @@ export const VideoFirstThumbnailTypeDefFields: MobilettoOrmFieldDefConfigs = {
         required: true,
         type: "number",
         control: "text",
-    },
-    fps: {
-        required: true,
-        type: "string",
-        regex: /^[\d+]\/[\d+]$/,
     },
 };
 
@@ -30,7 +26,12 @@ export const firstThumbnail: MediaOperationFunc = async (
     profile: ParsedProfile,
     outfile: string,
 ): Promise<ApplyProfileResponse> => {
-    const offset = profile.offset && profile.offset > 0 ? profile.offset : DEFAULT_FIRST_THUMBNAIL_OFFSET;
+    if (!profile.operationConfig) throw new Error(`transcode: profile.operationConfig not defined`);
+
+    const config = JSON.parse(profile.operationConfig) as VideoProfileFirstThumbnailType;
+    if (!config) throw new Error(`thumbnails: no operationConfig found on profile: ${profile.name}`);
+
+    const offset = config.offset && config.offset > 0 ? config.offset : DEFAULT_FIRST_THUMBNAIL_OFFSET;
     const args = [];
     args.push("-ss");
     args.push("" + offset);
@@ -38,7 +39,7 @@ export const firstThumbnail: MediaOperationFunc = async (
     args.push("-i");
     args.push(infile);
     args.push("-s");
-    args.push(profile.size);
+    args.push(config.size);
     args.push("-frames:v");
     args.push("1");
     args.push("-y");

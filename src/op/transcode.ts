@@ -1,5 +1,6 @@
 import { ApplyProfileResponse, MediaOperationFunc, ParsedProfile } from "yuebing-media";
 import { MobilettoOrmFieldDefConfigs, MobilettoOrmTypeDef } from "mobiletto-orm-typedef";
+import { VideoProfileTranscodeType } from "../type/VideoProfileTranscodeType.js";
 
 const FFMPEG_BITRATE_REGEX = /^\d+([bkMG]|(\.\d+[kMG]))?$/;
 
@@ -21,7 +22,7 @@ export const VideoTranscodeTypeDefFields: MobilettoOrmFieldDefConfigs = {
     frameRate: {
         required: true,
         type: "number",
-        values: ["23.976", "24", "25", "30", "29.97", "50", "60"],
+        values: [23.976, 24, 25, 30, 29.97, 50, 60],
     },
     audioCodec: {
         required: true,
@@ -30,8 +31,8 @@ export const VideoTranscodeTypeDefFields: MobilettoOrmFieldDefConfigs = {
     },
     audioChannels: {
         required: true,
-        type: "string",
-        values: ["1", "2", "2.1", "5.1", "7.1", "9.1"],
+        type: "number",
+        values: [1, 2, 2.1, 5.1, 7.1, 9.1],
     },
     audioRate: {
         required: true,
@@ -55,13 +56,15 @@ export const transcode: MediaOperationFunc = async (
     profile: ParsedProfile,
     outfile: string,
 ): Promise<ApplyProfileResponse> => {
-    const config = profile.operationConfig;
+    if (!profile.operationConfig) throw new Error(`transcode: profile.operationConfig not defined`);
+
+    const config = JSON.parse(profile.operationConfig) as VideoProfileTranscodeType;
     if (!config) throw new Error(`transcode: no operationConfig found on profile: ${profile.name}`);
+
     const args: string[] = [];
     args.push("-i");
     args.push(infile);
     args.push("-vcodec");
-    /*
     args.push("" + config.videoCodec);
     args.push("-s");
     args.push("" + config.videoSize);
@@ -77,7 +80,6 @@ export const transcode: MediaOperationFunc = async (
     args.push("" + config.audioRate);
     args.push("-b:a");
     args.push("" + config.audioBitrate);
-    */
     args.push("-y");
     args.push(outfile);
     return { args };

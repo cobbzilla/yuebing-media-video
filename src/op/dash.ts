@@ -1,5 +1,6 @@
 import { MobilettoOrmFieldDefConfigs, MobilettoOrmTypeDef } from "mobiletto-orm-typedef";
 import { ApplyProfileResponse, MediaOperationFunc, ParsedProfile } from "yuebing-media";
+import { VideoProfileDashType } from "../type/VideoProfileDashType.js";
 
 export const VideoDashTypeDefFields: MobilettoOrmFieldDefConfigs = {
     manifestAssets: {
@@ -23,7 +24,10 @@ export const dash: MediaOperationFunc = async (
     profile: ParsedProfile,
     outfile: string,
 ): Promise<ApplyProfileResponse> => {
-    // todo: does outfile need to be adjusted?
+    if (!profile.operationConfig) throw new Error(`transcode: profile.operationConfig not defined`);
+
+    const config = JSON.parse(profile.operationConfig) as VideoProfileDashType;
+    if (!config) throw new Error(`dash: no operationConfig found on profile: ${profile.name}`);
 
     if (!profile.subProfileObjects || profile.subProfileObjects.length === 0) {
         throw new Error(`dash: no subProfiles specified`);
@@ -102,11 +106,11 @@ export const dash: MediaOperationFunc = async (
     args.push(`${profile.name}_chunk-stream$RepresentationID$-$Number%05d$.$ext$`);
 
     // generate HLS playlist too
-    if (profile.hlsProfile) {
+    if (config.hlsProfile) {
         args.push("-hls_playlist");
         args.push("true");
         args.push("-hls_master_name");
-        args.push(`${profile.hlsProfile}_master.m3u8`);
+        args.push(`${config.hlsProfile}_master.m3u8`);
     }
 
     // use DASH format
