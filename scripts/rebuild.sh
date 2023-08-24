@@ -8,8 +8,7 @@ if [ -z "${BASE_DIR}" ] ; then
 fi
 
 clean () {
-    find "${BASE_DIR}"/lib/esm -type f | grep -v package.json | xargs rm
-    rm -rf "${BASE_DIR}"/src/type/*
+    find "${BASE_DIR}"/lib/esm -type f -exec rm -f {} \;
 }
 
 generate () {
