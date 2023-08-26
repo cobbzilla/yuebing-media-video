@@ -1,7 +1,7 @@
 import { ApplyProfileResponse, MediaOperationFunc, MediaOperationType, ParsedProfile } from "yuebing-media";
 import { MobilettoOrmFieldDefConfigs, MobilettoOrmTypeDef } from "mobiletto-orm-typedef";
 import { VideoProfileTranscodeType } from "../type/VideoProfileTranscodeType.js";
-import { OP_CONFIG_TYPES, OP_MAP, OPERATIONS } from "../operations.js";
+import { OP_CONFIG_TYPES, OP_MAP, OPERATIONS } from "../common.js";
 import { ffmpegSizeConfig } from "../properties.js";
 
 const FFMPEG_BITRATE_REGEX = /^\d+([bkMG]|(\.\d+[kMG]))?$/;
@@ -66,7 +66,7 @@ OPERATIONS.transcode = VideoTranscodeOperation;
 export const transcode: MediaOperationFunc = async (
     infile: string,
     profile: ParsedProfile,
-    outfile: string,
+    outDir: string,
 ): Promise<ApplyProfileResponse> => {
     if (!profile.operationConfigObject) throw new Error(`transcode: profile.operationConfigObject not defined`);
     const config = profile.operationConfigObject as VideoProfileTranscodeType;
@@ -91,7 +91,7 @@ export const transcode: MediaOperationFunc = async (
     args.push("-b:a");
     args.push("" + config.audioBitrate);
     args.push("-y");
-    args.push(outfile);
+    args.push(`${outDir}/${profile.name}.${profile.ext}`);
     return { args };
 };
 OP_MAP.transcode = transcode;

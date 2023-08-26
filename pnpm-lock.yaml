@@ -4,6 +4,11 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+dependencies:
+  hokey-lang:
+    specifier: ^1.0.0
+    version: 1.0.0
+
 devDependencies:
   '@types/chai':
     specifier: ^4.3.5
@@ -32,6 +37,9 @@ devDependencies:
   handlebars:
     specifier: ^4.7.8
     version: 4.7.8
+  hokey-runtime:
+    specifier: ^1.0.8
+    version: 1.0.8
   mobiletto-base:
     specifier: ^2.1.1
     version: 2.1.1
@@ -57,11 +65,14 @@ devDependencies:
     specifier: ^5.1.6
     version: 5.1.6
   yuebing-media:
-    specifier: ^1.1.4
-    version: 1.1.4
+    specifier: ^1.1.16
+    version: 1.1.16
+  yuebing-media-info:
+    specifier: ^1.0.5
+    version: 1.0.5
   yuebing-model:
-    specifier: ^2.7.21
-    version: 2.7.21
+    specifier: ^2.7.25
+    version: 2.7.25
   yuebing-util:
     specifier: ^1.0.0
     version: 1.0.0
@@ -928,6 +939,14 @@ packages:
     hasBin: true
     dev: true
 
+  /hokey-lang@1.0.0:
+    resolution: {integrity: sha512-CKT78tlkOdnk9fCrPhFc0SiZxPkH/9ns8ODLxhYQrMrnNvRfw/04J24plVKLY7051Cx7eO5AECUlZRGUq62llQ==}
+    dev: false
+
+  /hokey-runtime@1.0.8:
+    resolution: {integrity: sha512-YqJSwM99lVgkxZ0lv38LfzBCwMPYpgiYaDZoGDOHtE3+Nkjk9unEitsnwHZViAGscJPglTCJhdozkd/Gcf0kNA==}
+    dev: true
+
   /ignore@5.2.4:
     resolution: {integrity: sha512-MAb38BcSbH0eHNBxn7ql2NH/kX33OkB3lZ1BNdh7ENeRChHTYsTvWrMubiIAMNS2llXEEgZ1MUOBtXChP3kaFQ==}
     engines: {node: '>= 4'}
@@ -1662,12 +1681,16 @@ packages:
     engines: {node: '>=10'}
     dev: true
 
-  /yuebing-media@1.1.4:
-    resolution: {integrity: sha512-aHAP+/IY72jLhnO/LTChgkUwFEkq0pYOwdVjXhnJjcNgb7NMg6dXY5DVK3+EK+euU90r6gGe7IAbfGweEYuBtg==}
+  /yuebing-media-info@1.0.5:
+    resolution: {integrity: sha512-psFxqztgC8s8ZPQzwr3fMMLQBi+BY+YoOaE+WTVrGaRfX/TOCcsOK3EP4MKjKE6mYH4L4jclLljpWzVF5n7C3w==}
     dev: true
 
-  /yuebing-model@2.7.21:
-    resolution: {integrity: sha512-7l55BkASqCjqgQOtImqVEZ72p+frAfvVnYoy1z6umYqZMrAt1b0gz9nhbdmf+PWspG8fTDKOqpQQP0AkKtruxg==}
+  /yuebing-media@1.1.16:
+    resolution: {integrity: sha512-NDqwfwW1ovv37aGRJiVLkV8jhK1m6S29REg0qlVN5Mv19MKM/ujrasoYNOaeF6nyOX0zDYbCUFYzdAHyGPwfQQ==}
+    dev: true
+
+  /yuebing-model@2.7.25:
+    resolution: {integrity: sha512-IA7vR+BQtIjDkhw0CslGiU2usYaDd0MPG5QR0M/ss555Ch6/SMNtLaDwlG0dTGb5Rt7RyWe64FYMcDoyCv1czg==}
     dev: true
 
   /yuebing-util@1.0.0:

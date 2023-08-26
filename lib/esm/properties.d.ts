@@ -1,4 +1,5 @@
 export declare const textTrackTypes: string[];
+export declare const textTrackRegex: RegExp;
 export declare const ffmpegSizes: Record<string, string>;
 export declare const ffmpegSizeConfig: {
     items: {

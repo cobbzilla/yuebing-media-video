@@ -1,7 +1,7 @@
 import { MobilettoOrmFieldDefConfigs, MobilettoOrmTypeDef } from "mobiletto-orm-typedef";
 import { ApplyProfileResponse, MediaOperationFunc, MediaOperationType, ParsedProfile } from "yuebing-media";
 import { VideoProfileDashType } from "../type/VideoProfileDashType.js";
-import { OP_CONFIG_TYPES, OP_MAP, OPERATIONS } from "../operations.js";
+import { OP_CONFIG_TYPES, OP_MAP, OPERATIONS } from "../common.js";
 
 export const VideoDashTypeDefFields: MobilettoOrmFieldDefConfigs = {
     manifestAssets: {
@@ -41,7 +41,7 @@ OPERATIONS.dash = VideoDashOperation;
 export const dash: MediaOperationFunc = async (
     infile: string,
     profile: ParsedProfile,
-    outfile: string,
+    outDir: string,
 ): Promise<ApplyProfileResponse> => {
     if (!profile.operationConfigObject) throw new Error(`dash: profile.operationConfigObject not defined`);
     const config = profile.operationConfigObject as VideoProfileDashType;
@@ -118,9 +118,9 @@ export const dash: MediaOperationFunc = async (
 
     // ensure output assets are named appropriately so that handleOutputFiles picks them up
     args.push("-init_seg_name");
-    args.push(`${profile.name}_init-stream$RepresentationID$.$ext$`);
+    args.push(`${outDir}/${profile.name}_init-stream$RepresentationID$.$ext$`);
     args.push("-media_seg_name");
-    args.push(`${profile.name}_chunk-stream$RepresentationID$-$Number%05d$.$ext$`);
+    args.push(`${outDir}/${profile.name}_chunk-stream$RepresentationID$-$Number%05d$.$ext$`);
 
     // generate HLS playlist too
     if (config.hlsProfile) {
@@ -136,7 +136,7 @@ export const dash: MediaOperationFunc = async (
 
     // overwrite output file
     args.push("-y");
-    args.push(outfile);
+    args.push(`${outDir}/${profile.name}.${profile.ext}`);
     return { args };
 };
 OP_MAP.dash = dash;

@@ -1,7 +1,7 @@
 import { ApplyProfileResponse, MediaOperationFunc, MediaOperationType, ParsedProfile } from "yuebing-media";
 import { MobilettoOrmFieldDefConfigs, MobilettoOrmTypeDef } from "mobiletto-orm-typedef";
 import { VideoProfileThumbnailsType } from "../type/VideoProfileThumbnailsType.js";
-import { OP_CONFIG_TYPES, OP_MAP, OPERATIONS } from "../operations.js";
+import { OP_CONFIG_TYPES, OP_MAP, OPERATIONS } from "../common.js";
 import { ffmpegSizeConfig } from "../properties.js";
 
 export const VideoThumbnailsTypeDefFields: MobilettoOrmFieldDefConfigs = {
@@ -34,7 +34,7 @@ OPERATIONS.thumbnails = VideoThumbnailsOperation;
 export const thumbnails: MediaOperationFunc = async (
     infile: string,
     profile: ParsedProfile,
-    outfile: string,
+    outDir: string,
 ): Promise<ApplyProfileResponse> => {
     if (!profile.operationConfigObject) throw new Error(`thumbnails: profile.operationConfigObject not defined`);
     const config = profile.operationConfigObject as VideoProfileThumbnailsType;
@@ -47,7 +47,7 @@ export const thumbnails: MediaOperationFunc = async (
     args.push("-vf");
     args.push("fps=" + config.fps);
     args.push("-y");
-    args.push(outfile);
+    args.push(`${outDir}/${profile.name}_%04d.${profile.ext}`);
     return { args };
 };
 OP_MAP.thumbnails = thumbnails;

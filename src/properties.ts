@@ -12,7 +12,7 @@ export const textTrackTypes = ["text/vtt", "application/x-subrip"];
 // 4. (\.sdh)?   : optional, if present, it means the track includes captions for non-verbal audio
 // 5. (vtt|srt)  : vtt and srt are the only file extensions supported by yuebing; the web player only
 //                 supports vtt
-// export const textTrackRegex: new RegExp(`^${ASSET_PREFIX}(\\w+)${assetSuffix(VIDEO_MEDIA_TYPE)}(\\w+)\.(\\w{2,3})(\.sdh)?\.(vtt|srt)$`);
+export const textTrackRegex: RegExp = new RegExp(`^(\\w+)~(\\w+).(\\w{2,3})(.sdh)?.(vtt|srt)$`);
 
 export const ffmpegSizes: Record<string, string> = {
     ntsc: "720x480",
