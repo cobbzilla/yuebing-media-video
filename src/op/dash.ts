@@ -1,7 +1,13 @@
 import { MobilettoOrmFieldDefConfigs, MobilettoOrmTypeDef } from "mobiletto-orm-typedef";
-import { ApplyProfileResponse, MediaOperationFunc, MediaOperationType, ParsedProfile } from "yuebing-media";
+import {
+    ApplyProfileResponse,
+    MediaOperationFunc,
+    MediaOperationType,
+    MediaPluginProfileType,
+    ParsedProfile,
+} from "yuebing-media";
 import { VideoProfileDashType } from "../type/VideoProfileDashType.js";
-import { OP_CONFIG_TYPES, OP_MAP, OPERATIONS } from "../common.js";
+import { VideoProfileTranscodeType } from "../type/VideoProfileTranscodeType";
 
 export const VideoDashTypeDefFields: MobilettoOrmFieldDefConfigs = {
     manifestAssets: {
@@ -29,14 +35,12 @@ export const VideoDashTypeDef: MobilettoOrmTypeDef = new MobilettoOrmTypeDef({
         },
     },
 });
-OP_CONFIG_TYPES.dash = VideoDashTypeDef;
 
 export const VideoDashOperation: MediaOperationType = {
     name: "dash",
     command: "ffmpeg",
     minFileSize: 128,
 };
-OPERATIONS.dash = VideoDashOperation;
 
 export const dash: MediaOperationFunc = async (
     infile: string,
@@ -56,18 +60,22 @@ export const dash: MediaOperationFunc = async (
 
     for (let i = 0; i < profile.subProfileObjects.length; i++) {
         const subProfile = profile.subProfileObjects[i];
+        if (!subProfile.operationConfigObject) {
+            throw new Error(`dash: no subProfile.operationConfigObject for subProfile=${subProfile.name}`);
+        }
+        const subConfig: VideoProfileTranscodeType = subProfile.operationConfigObject as VideoProfileTranscodeType;
 
         // map audio tracks
         args.push("-map");
         args.push("0:a");
         args.push(`-c:a:${i}`);
-        args.push(subProfile.audioCodec);
+        args.push("" + subConfig.audioCodec);
         args.push(`-b:a:${i}`);
-        args.push(subProfile.audioBitrate);
+        args.push("" + subConfig.audioBitrate);
         args.push(`-ar:${i}`);
-        args.push(subProfile.audioRate);
+        args.push("" + subConfig.audioRate);
         args.push(`-ac:${i}`);
-        args.push(subProfile.audioChannels);
+        args.push("" + subConfig.audioChannels);
 
         // skip subtitle tracks, they're handled separately
         // The "negative mapping" is described here: https://trac.ffmpeg.org/wiki/Map
@@ -78,11 +86,11 @@ export const dash: MediaOperationFunc = async (
         args.push("-map");
         args.push("0:v");
         args.push(`-c:v:${i}`);
-        args.push(subProfile.videoCodec);
+        args.push("" + subConfig.videoCodec);
         args.push(`-b:v:${i}`);
-        args.push(subProfile.videoBitrate);
+        args.push("" + subConfig.videoBitrate);
         args.push(`-s:v:${i}`);
-        args.push(subProfile.videoSize);
+        args.push(subConfig.videoSize);
         args.push(`-profile:v:${i}`);
         args.push("main");
     }
@@ -118,16 +126,16 @@ export const dash: MediaOperationFunc = async (
 
     // ensure output assets are named appropriately so that handleOutputFiles picks them up
     args.push("-init_seg_name");
-    args.push(`${outDir}/${profile.name}_init-stream$RepresentationID$.$ext$`);
+    args.push(`${profile.name}~init-stream$RepresentationID$.$ext$`);
     args.push("-media_seg_name");
-    args.push(`${outDir}/${profile.name}_chunk-stream$RepresentationID$-$Number%05d$.$ext$`);
+    args.push(`${profile.name}~chunk-stream$RepresentationID$-$Number%05d$.$ext$`);
 
     // generate HLS playlist too
     if (config.hlsProfile) {
         args.push("-hls_playlist");
         args.push("true");
         args.push("-hls_master_name");
-        args.push(`${config.hlsProfile}_master.m3u8`);
+        args.push(`${config.hlsProfile}~master.m3u8`);
     }
 
     // use DASH format
@@ -139,4 +147,33 @@ export const dash: MediaOperationFunc = async (
     args.push(`${outDir}/${profile.name}.${profile.ext}`);
     return { args };
 };
-OP_MAP.dash = dash;
+
+export const load = (
+    OPERATIONS: Record<string, MediaOperationType>,
+    OP_MAP: Record<string, MediaOperationFunc>,
+    DEFAULT_PROFILES: MediaPluginProfileType[],
+    OP_CONFIG_TYPES: Record<string, MobilettoOrmTypeDef>,
+) => {
+    OP_CONFIG_TYPES.dash = VideoDashTypeDef;
+    OPERATIONS.dash = VideoDashOperation;
+    OP_MAP.dash = dash;
+    DEFAULT_PROFILES.push({
+        name: "dash_mp4",
+        operation: "dash",
+        subProfiles: ["transcode_high_mp4", "transcode_mid_mp4", "transcode_low_mp4", "transcode_min_mp4"],
+        ext: "mpd",
+        contentType: "application/dash+xml",
+        primary: true,
+        multiFile: true,
+        additionalAssets: [
+            "^dash_mp4~init-stream\\d+.m4s$",
+            "^dash_mp4~chunk-stream\\d+-\\d+.m4s$",
+            "^media_d+.m3u8$",
+            "^hls_m3u8~master.m3u8$",
+        ],
+        operationConfig: JSON.stringify({
+            manifestAssets: ["dash_mp4.mpd"],
+            hlsProfile: "hls_m3u8",
+        }),
+    });
+};

@@ -2,7 +2,6 @@
 // by the web video player
 export const textTrackTypes = ["text/vtt", "application/x-subrip"];
 
-// TODO
 // Text track output filenames must match this regex for the web player to recognize them.
 // The regex (matching groups), from left to right, are:
 // 1. (\\w+)     : the video profile name (for example vttTracks_extract)

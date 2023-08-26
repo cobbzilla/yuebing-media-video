@@ -2,18 +2,22 @@ import { basename, dirname } from "path";
 import { existsSync, writeFileSync } from "fs";
 import { MobilettoConnection } from "mobiletto-base";
 import { sha } from "mobiletto-orm-typedef";
-import { ApplyProfileResponse, MediaOperationFunc, MediaOperationType, ParsedProfile } from "yuebing-media";
-import { OP_MAP, OPERATIONS } from "../common.js";
-import { toLang } from "../util/lang.js";
-import { srt2webvtt } from "../util/video_srt2vtt";
+import {
+    ApplyProfileResponse,
+    MediaOperationFunc,
+    MediaOperationType,
+    MediaPluginProfileType,
+    ParsedProfile,
+} from "yuebing-media";
 import { textTrackRegex } from "../properties.js";
+import { toLang } from "../util/lang.js";
+import { srt2webvtt } from "../util/video_srt2vtt.js";
 
 export const VideoSrt2VttTracksOperation: MediaOperationType = {
     name: "srt2vttTracks",
     func: true,
     minFileSize: 7, // minimum size of webvtt file is 7 bytes (and any srt < 7 bytes is also almost certainly invalid)
 };
-OPERATIONS.srt2vttTracks = VideoSrt2VttTracksOperation;
 
 const SRT_TRACK_REGEX = new RegExp("(.+?)(\\.(\\w{2}(\\.(sdh))?))?\\.srt$", "ui");
 
@@ -66,4 +70,19 @@ export const srt2vttTextTracks: MediaOperationFunc = async (
     }
     return { result: { converted, alreadyExist }, upload: true };
 };
-OP_MAP.srt2vttTextTracks = srt2vttTextTracks;
+
+export const load = (
+    OPERATIONS: Record<string, MediaOperationType>,
+    OP_MAP: Record<string, MediaOperationFunc>,
+    DEFAULT_PROFILES: MediaPluginProfileType[],
+) => {
+    OPERATIONS.srt2vttTracks = VideoSrt2VttTracksOperation;
+    OP_MAP.srt2vttTextTracks = srt2vttTextTracks;
+    DEFAULT_PROFILES.push({
+        name: "srt2vttTracks",
+        operation: "srt2vttTracks",
+        ext: "vtt",
+        contentType: "text/vtt",
+        multiFile: true,
+    });
+};

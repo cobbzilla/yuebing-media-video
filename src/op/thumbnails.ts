@@ -1,7 +1,12 @@
-import { ApplyProfileResponse, MediaOperationFunc, MediaOperationType, ParsedProfile } from "yuebing-media";
+import {
+    ApplyProfileResponse,
+    MediaOperationFunc,
+    MediaOperationType,
+    MediaPluginProfileType,
+    ParsedProfile,
+} from "yuebing-media";
 import { MobilettoOrmFieldDefConfigs, MobilettoOrmTypeDef } from "mobiletto-orm-typedef";
 import { VideoProfileThumbnailsType } from "../type/VideoProfileThumbnailsType.js";
-import { OP_CONFIG_TYPES, OP_MAP, OPERATIONS } from "../common.js";
 import { ffmpegSizeConfig } from "../properties.js";
 
 export const VideoThumbnailsTypeDefFields: MobilettoOrmFieldDefConfigs = {
@@ -22,14 +27,12 @@ export const VideoThumbnailsTypeDef: MobilettoOrmTypeDef = new MobilettoOrmTypeD
 }).extend({
     fields: { size: ffmpegSizeConfig },
 });
-OP_CONFIG_TYPES.thumbnails = VideoThumbnailsTypeDef;
 
 export const VideoThumbnailsOperation: MediaOperationType = {
     name: "thumbnails",
     command: "ffmpeg",
     minFileSize: 64,
 };
-OPERATIONS.thumbnails = VideoThumbnailsOperation;
 
 export const thumbnails: MediaOperationFunc = async (
     infile: string,
@@ -50,4 +53,41 @@ export const thumbnails: MediaOperationFunc = async (
     args.push(`${outDir}/${profile.name}_%04d.${profile.ext}`);
     return { args };
 };
-OP_MAP.thumbnails = thumbnails;
+
+export const load = (
+    OPERATIONS: Record<string, MediaOperationType>,
+    OP_MAP: Record<string, MediaOperationFunc>,
+    DEFAULT_PROFILES: MediaPluginProfileType[],
+    OP_CONFIG_TYPES: Record<string, MobilettoOrmTypeDef>,
+) => {
+    OP_CONFIG_TYPES.thumbnails = VideoThumbnailsTypeDef;
+    OPERATIONS.thumbnails = VideoThumbnailsOperation;
+    OP_MAP.thumbnails = thumbnails;
+    DEFAULT_PROFILES.push(
+        {
+            name: "thumbnails_small",
+            operation: "thumbnails",
+            ext: "jpg",
+            contentType: "image/jpeg",
+            multiFile: true,
+            operationConfig: JSON.stringify({
+                size: "vga",
+                fps: "1/60",
+            }),
+        },
+        {
+            name: "thumbnails_medium",
+            from: "thumbnails_small",
+            operationConfig: JSON.stringify({
+                size: "hd720",
+            }),
+        },
+        {
+            name: "thumbnails_large",
+            from: "thumbnails_small",
+            operationConfig: JSON.stringify({
+                size: "hd1080",
+            }),
+        },
+    );
+};

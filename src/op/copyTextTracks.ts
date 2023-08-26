@@ -1,8 +1,13 @@
 import { basename, dirname } from "path";
 import { existsSync, writeFileSync } from "fs";
 import { MobilettoConnection } from "mobiletto-base";
-import { ApplyProfileResponse, MediaOperationFunc, MediaOperationType, ParsedProfile } from "yuebing-media";
-import { OP_MAP, OPERATIONS } from "../common.js";
+import {
+    ApplyProfileResponse,
+    MediaOperationFunc,
+    MediaOperationType,
+    MediaPluginProfileType,
+    ParsedProfile,
+} from "yuebing-media";
 import { textTrackRegex } from "../properties.js";
 import { toLang } from "../util/lang.js";
 
@@ -11,7 +16,6 @@ export const VideoCopyTextTracksOperation: MediaOperationType = {
     func: true,
     minFileSize: 7, // minimum size of webvtt file is 7 bytes (and any srt < 7 bytes is also almost certainly invalid)
 };
-OPERATIONS.copyTextTracks = VideoCopyTextTracksOperation;
 
 export const copyTextTracks: MediaOperationFunc = async (
     infile: string,
@@ -54,4 +58,26 @@ export const copyTextTracks: MediaOperationFunc = async (
     }
     return { result: { copied, alreadyExist } };
 };
-OP_MAP.copyTextTracks = copyTextTracks;
+
+export const load = (
+    OPERATIONS: Record<string, MediaOperationType>,
+    OP_MAP: Record<string, MediaOperationFunc>,
+    DEFAULT_PROFILES: MediaPluginProfileType[],
+) => {
+    OPERATIONS.copyTextTracks = VideoCopyTextTracksOperation;
+    OP_MAP.copyTextTracks = copyTextTracks;
+    DEFAULT_PROFILES.push({
+        name: "vttTracks_copy",
+        operation: "copyTextTracks",
+        ext: "vtt",
+        contentType: "text/vtt",
+        multiFile: true,
+    });
+    DEFAULT_PROFILES.push({
+        name: "srtTracks_copy",
+        operation: "copyTextTracks",
+        ext: "srt",
+        contentType: "application/x-subrip",
+        multiFile: true,
+    });
+};

@@ -1,2 +1,2 @@
 import { MediaPlugin } from "yuebing-media";
-export declare const mediaDriver: MediaPlugin;
+export declare const mediaPlugin: MediaPlugin;

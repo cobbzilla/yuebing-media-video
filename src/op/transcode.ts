@@ -1,7 +1,12 @@
-import { ApplyProfileResponse, MediaOperationFunc, MediaOperationType, ParsedProfile } from "yuebing-media";
+import {
+    ApplyProfileResponse,
+    MediaOperationFunc,
+    MediaOperationType,
+    MediaPluginProfileType,
+    ParsedProfile,
+} from "yuebing-media";
 import { MobilettoOrmFieldDefConfigs, MobilettoOrmTypeDef } from "mobiletto-orm-typedef";
 import { VideoProfileTranscodeType } from "../type/VideoProfileTranscodeType.js";
-import { OP_CONFIG_TYPES, OP_MAP, OPERATIONS } from "../common.js";
 import { ffmpegSizeConfig } from "../properties.js";
 
 const FFMPEG_BITRATE_REGEX = /^\d+([bkMG]|(\.\d+[kMG]))?$/;
@@ -54,14 +59,12 @@ export const VideoTranscodeTypeDef: MobilettoOrmTypeDef = new MobilettoOrmTypeDe
 }).extend({
     fields: { videoSize: ffmpegSizeConfig },
 });
-OP_CONFIG_TYPES.transcode = VideoTranscodeTypeDef;
 
 export const VideoTranscodeOperation: MediaOperationType = {
     name: "transcode",
     command: "ffmpeg",
     minFileSize: 1024 * 64,
 };
-OPERATIONS.transcode = VideoTranscodeOperation;
 
 export const transcode: MediaOperationFunc = async (
     infile: string,
@@ -94,4 +97,61 @@ export const transcode: MediaOperationFunc = async (
     args.push(`${outDir}/${profile.name}.${profile.ext}`);
     return { args };
 };
-OP_MAP.transcode = transcode;
+
+export const load = (
+    OPERATIONS: Record<string, MediaOperationType>,
+    OP_MAP: Record<string, MediaOperationFunc>,
+    DEFAULT_PROFILES: MediaPluginProfileType[],
+    OP_CONFIG_TYPES: Record<string, MobilettoOrmTypeDef>,
+) => {
+    OP_CONFIG_TYPES.transcode = VideoTranscodeTypeDef;
+    OPERATIONS.transcode = VideoTranscodeOperation;
+    OP_MAP.transcode = transcode;
+    DEFAULT_PROFILES.push(
+        {
+            name: "transcode_high_mp4",
+            enabled: false,
+            operation: "transcode",
+            primary: true,
+            ext: "mp4",
+            contentType: "video/mp4",
+            operationConfig: JSON.stringify({
+                videoCodec: "libx264",
+                videoSize: "hd1080",
+                videoBitrate: "2048k",
+                frameRate: 30,
+                audioCodec: "aac",
+                audioChannels: 2,
+                audioRate: 44100,
+                audioBitrate: "128k",
+            }),
+        },
+        {
+            name: "transcode_mid_mp4",
+            from: "transcode_high_mp4",
+            operationConfig: JSON.stringify({
+                videoBitrate: "1024k",
+            }),
+        },
+        {
+            name: "transcode_low_mp4",
+            from: "transcode_mid_mp4",
+            operationConfig: JSON.stringify({
+                videoSize: "hd720",
+                videoBitrate: "384k",
+                frameRate: 24,
+                audioChannels: 1,
+                audioBitrate: "64k",
+            }),
+        },
+        {
+            name: "transcode_min_mp4",
+            from: "transcode_low_mp4",
+            operationConfig: JSON.stringify({
+                videoSize: "640x360",
+                videoBitrate: "192k",
+                audioBitrate: "48k",
+            }),
+        },
+    );
+};

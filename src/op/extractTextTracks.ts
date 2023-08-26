@@ -1,11 +1,16 @@
 import { basename } from "path";
 import { MobilettoConnection } from "mobiletto-base";
 import { ALL_LANGS_ARRAY } from "hokey-runtime";
-import { ApplyProfileResponse, MediaOperationFunc, MediaOperationType, ParsedProfile } from "yuebing-media";
+import {
+    ApplyProfileResponse,
+    MediaOperationFunc,
+    MediaOperationType,
+    MediaPluginProfileType,
+    ParsedProfile,
+} from "yuebing-media";
 import { ProfileJobType } from "yuebing-model";
-import { InfoMediainfoOperation } from "yuebing-media-info";
-import { OP_MAP, OPERATIONS } from "../common.js";
 import { textTrackRegex } from "../properties.js";
+import { OP_MEDIAINFO } from "./mediainfo.js";
 
 export const VideoExtractTextTracksOperation: MediaOperationType = {
     name: "extractTextTracks",
@@ -13,7 +18,6 @@ export const VideoExtractTextTracksOperation: MediaOperationType = {
     analysis: true, // srt extraction must run during analysis, so if srt2vtt is enabled, srt files will be present
     minFileSize: 7, // minimum size of webvtt file is 7 bytes (and any srt < 7 bytes is also almost certainly invalid)
 };
-OPERATIONS.extractTextTracks = VideoExtractTextTracksOperation;
 
 const codecForTextTrackContentType = (contentType: string): string | null => {
     const ct = contentType.toLowerCase();
@@ -45,7 +49,7 @@ export const extractTextTracks: MediaOperationFunc = async (
     }
 
     const textTracks = [];
-    const mediainfoJob = analysisResults.find((r) => r.operation === InfoMediainfoOperation.name);
+    const mediainfoJob = analysisResults.find((r) => r.operation === OP_MEDIAINFO);
     if (!mediainfoJob) {
         console.warn(`${logPrefix} skipping (no job with profile.operation=mediainfo found)`);
         return {};
@@ -107,4 +111,19 @@ export const extractTextTracks: MediaOperationFunc = async (
     args.push("-y");
     return { args };
 };
-OP_MAP.extractTextTracks = extractTextTracks;
+
+export const load = (
+    OPERATIONS: Record<string, MediaOperationType>,
+    OP_MAP: Record<string, MediaOperationFunc>,
+    DEFAULT_PROFILES: MediaPluginProfileType[],
+) => {
+    OPERATIONS.extractTextTracks = VideoExtractTextTracksOperation;
+    OP_MAP.extractTextTracks = extractTextTracks;
+    DEFAULT_PROFILES.push({
+        name: "vttTracks_extract",
+        operation: "extractTextTracks",
+        ext: "vtt",
+        contentType: "text/vtt",
+        multiFile: true,
+    });
+};

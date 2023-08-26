@@ -1,30 +1,23 @@
-import { MobilettoConnection } from "mobiletto-base";
-import { ProfileJobType } from "yuebing-model";
-import { ApplyProfileResponse, MediaPlugin, ParsedProfile } from "yuebing-media";
-import { DEFAULT_PROFILES, OP_CONFIG_TYPES, OP_MAP, OPERATIONS } from "./common.js";
+import { MediaProfileType, MediaType } from "yuebing-model";
+import { MediaOperationFunc, MediaOperationType, MediaPlugin } from "yuebing-media";
+import { load } from "./op/index.js";
+import { MobilettoOrmTypeDef } from "mobiletto-orm-typedef";
 
-export const mediaDriver: MediaPlugin = {
-    applyProfile: async (
-        downloaded: string,
-        profile: ParsedProfile,
-        outDir: string,
-        sourcePath: string,
-        conn?: MobilettoConnection,
-        analysisResults?: ProfileJobType[],
-    ): Promise<ApplyProfileResponse> => {
-        if (profile.noop) throw new Error(`applyProfile: cannot apply noop profile: ${profile.name}`);
-        if (!profile.enabled) throw new Error(`applyProfile: profile not enabled: ${profile.name}`);
-        if (!profile.operation) throw new Error(`applyProfile: no operation defined for profile: ${profile.name}`);
-        return await OP_MAP[profile.operation](
-            downloaded,
-            profile,
-            `${outDir}/${profile.operation}.${profile.ext}`,
-            sourcePath,
-            conn,
-            analysisResults,
-        );
-    },
-    operations: OPERATIONS,
-    operationConfigType: (operation: string) => OP_CONFIG_TYPES[operation],
-    defaultProfiles: DEFAULT_PROFILES,
+const VIDEO_MEDIA: MediaType = {
+    name: "video",
+    ext: ["mp4", "m4v", "avi", "mpg", "mpeg", "mov", "webm", "mkv", "flv", "3gp", "wmv"],
+};
+
+const OP_MAP: Record<string, MediaOperationFunc> = {};
+const OP_CONFIG_TYPES: Record<string, MobilettoOrmTypeDef> = {};
+const OPERATIONS: Record<string, MediaOperationType> = {};
+const DEFAULT_PROFILES: MediaProfileType[] = [];
+
+export const mediaPlugin: MediaPlugin = {
+    initialize: () => load(OPERATIONS, OP_MAP, DEFAULT_PROFILES, OP_CONFIG_TYPES),
+    media: VIDEO_MEDIA,
+    operations: () => OPERATIONS,
+    operationFunction: (op: string) => OP_MAP[op],
+    operationConfigType: (op: string) => OP_CONFIG_TYPES[op],
+    defaultProfiles: () => DEFAULT_PROFILES,
 };

@@ -1,7 +1,12 @@
-import { ApplyProfileResponse, MediaOperationFunc, MediaOperationType, ParsedProfile } from "yuebing-media";
+import {
+    ApplyProfileResponse,
+    MediaOperationFunc,
+    MediaOperationType,
+    MediaPluginProfileType,
+    ParsedProfile,
+} from "yuebing-media";
 import { MobilettoOrmFieldDefConfigs, MobilettoOrmTypeDef } from "mobiletto-orm-typedef";
 import { VideoProfileFirstThumbnailType } from "../type/VideoProfileFirstThumbnailType.js";
-import { OP_CONFIG_TYPES, OP_MAP, OPERATIONS } from "../common.js";
 import { ffmpegSizeConfig } from "../properties.js";
 
 export const VideoFirstThumbnailTypeDefFields: MobilettoOrmFieldDefConfigs = {
@@ -22,14 +27,12 @@ export const VideoFirstThumbnailTypeDef: MobilettoOrmTypeDef = new MobilettoOrmT
 }).extend({
     fields: { size: ffmpegSizeConfig },
 });
-OP_CONFIG_TYPES.firstThumbnail = VideoFirstThumbnailTypeDef;
 
 export const VideoFirstThumbnailOperation: MediaOperationType = {
     name: "firstThumbnail",
     command: "ffmpeg",
     minFileSize: 64,
 };
-OPERATIONS.firstThumbnail = VideoFirstThumbnailOperation;
 
 const DEFAULT_FIRST_THUMBNAIL_OFFSET = 3;
 
@@ -56,4 +59,41 @@ export const firstThumbnail: MediaOperationFunc = async (
     args.push(`${outDir}/${profile.name}.${profile.ext}`);
     return { args };
 };
-OP_MAP.firstThumbnail = firstThumbnail;
+
+export const load = (
+    OPERATIONS: Record<string, MediaOperationType>,
+    OP_MAP: Record<string, MediaOperationFunc>,
+    DEFAULT_PROFILES: MediaPluginProfileType[],
+    OP_CONFIG_TYPES: Record<string, MobilettoOrmTypeDef>,
+) => {
+    OP_CONFIG_TYPES.firstThumbnail = VideoFirstThumbnailTypeDef;
+    OPERATIONS.firstThumbnail = VideoFirstThumbnailOperation;
+    OP_MAP.firstThumbnail = firstThumbnail;
+    DEFAULT_PROFILES.push(
+        {
+            name: "firstThumbnail_small",
+            operation: "firstThumbnail",
+            ext: "jpg",
+            contentType: "image/jpeg",
+            multiFile: true,
+            operationConfig: JSON.stringify({
+                size: "vga",
+                offset: 6,
+            }),
+        },
+        {
+            name: "firstThumbnail_medium",
+            from: "firstThumbnail_small",
+            operationConfig: JSON.stringify({
+                size: "hd720",
+            }),
+        },
+        {
+            name: "firstThumbnail_large",
+            from: "firstThumbnail_small",
+            operationConfig: JSON.stringify({
+                size: "hd1080",
+            }),
+        },
+    );
+};
