@@ -2,7 +2,7 @@ import * as fs from "fs";
 import { before, after, describe, it } from "mocha";
 import { expect } from "chai";
 import { newTest, cleanupTest, waitForNonemptyQuery } from "./setup.js";
-import { connectVolume } from "yuebing-model";
+import { connectVolume } from "yuebing-server-util";
 import { destinationPath } from "yuebing-media";
 import { mediaPlugin as videoPlugin } from "../lib/esm/index.js";
 
@@ -69,7 +69,10 @@ describe("test yuebing-media-video", async () => {
             const dataStat = fs.statSync(uploadJob.localPath);
 
             // transformed file should now be available at the destination
-            const destConn = await connectVolume(test.destination);
+            const destConnResult = await connectVolume(test.destination);
+            const destConn = destConnResult.connection;
+            expect(destConn).is.not.undefined;
+            expect(destConn).is.not.null;
             const destPath = destinationPath(uploadJob.asset, uploadJob.media, uploadJob.profile, uploadJob.localPath);
             const uploadedMeta = await destConn.safeMetadata(destPath);
             expect(uploadedMeta).is.not.null;
