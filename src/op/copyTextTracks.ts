@@ -71,13 +71,11 @@ export const load = (
         operation: "copyTextTracks",
         ext: "vtt",
         contentType: "text/vtt",
-        multiFile: true,
     });
     DEFAULT_PROFILES.push({
         name: "srtTracks_copy",
         operation: "copyTextTracks",
         ext: "srt",
         contentType: "application/x-subrip",
-        multiFile: true,
     });
 };

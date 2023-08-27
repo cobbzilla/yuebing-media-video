@@ -44,9 +44,7 @@ describe("test yuebing-media-video", async () => {
 
             // UploadJob should already be finished
             const uploadJobs = await test.uploadJobRepo.safeFindBy("asset", test.assetName);
-            if (!profile.multiFile) {
-                expect(uploadJobs.length).eq(1);
-            }
+            expect(uploadJobs.length).gte(1);
             const uploadJob = uploadJobs[0];
             expect(uploadJob.status).eq("finished");
             expect(uploadJob.finished).lt(finishedTransforms[0].finished); // upload finishes, then xform

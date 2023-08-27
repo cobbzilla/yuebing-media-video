@@ -69,7 +69,6 @@ export const load = (
             operation: "thumbnails",
             ext: "jpg",
             contentType: "image/jpeg",
-            multiFile: true,
             operationConfig: JSON.stringify({
                 size: "vga",
                 fps: "1/60",

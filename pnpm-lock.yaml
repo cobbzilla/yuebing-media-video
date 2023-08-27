@@ -74,20 +74,20 @@ devDependencies:
     specifier: ^5.1.6
     version: 5.1.6
   yuebing-media:
-    specifier: ^1.1.37
-    version: 1.1.37
+    specifier: ^1.1.38
+    version: 1.1.38
   yuebing-media-info:
-    specifier: ^1.0.28
-    version: 1.0.28
+    specifier: ^1.0.29
+    version: 1.0.29
   yuebing-messages:
     specifier: ^2.1.9
     version: 2.1.9
   yuebing-model:
-    specifier: ^2.7.30
-    version: 2.7.30
+    specifier: ^2.7.31
+    version: 2.7.31
   yuebing-scan:
-    specifier: ^1.2.21
-    version: 1.2.21
+    specifier: ^1.2.22
+    version: 1.2.22
   zilla-util:
     specifier: ^1.0.1
     version: 1.0.1
@@ -1708,12 +1708,12 @@ packages:
     engines: {node: '>=10'}
     dev: true
 
-  /yuebing-media-info@1.0.28:
-    resolution: {integrity: sha512-6KBS1EzeCazlenZe60SL0P6gkdjh5+PpB5CAGFGiRr/LDZyedGPF/zDp4HxYVM7wr/qi8Q5mxZEhagQgLwCBBQ==}
+  /yuebing-media-info@1.0.29:
+    resolution: {integrity: sha512-jdPYzOx0MtcIBwHEyAppZIwt+i20jbndXtBqcvaY96XnzWs6Mz7K2AGxfoeBnlwSRKwKbCEJSf8/LBZovXz3jw==}
     dev: true
 
-  /yuebing-media@1.1.37:
-    resolution: {integrity: sha512-+AJQIrD0hAAEdBXHsBhVEcq9XsazS9ovkyigow9k+L8krmtTXqgWPr53EzLueQ9BiVTObE6kCiqbr3Tn2ny90Q==}
+  /yuebing-media@1.1.38:
+    resolution: {integrity: sha512-5k1Kk7YbFCkO5ve1WtACUJeyGqysb+IoKJOTWM1sAqVjAiaOOWZgxVcjNAUfaJrf9YSFBE7hyQ5SL0OIXEX10g==}
     dev: true
 
   /yuebing-messages@2.1.9:
@@ -1722,12 +1722,12 @@ packages:
       hokey-runtime: 1.0.8
     dev: true
 
-  /yuebing-model@2.7.30:
-    resolution: {integrity: sha512-JZNp/MrFocMxspGehN1ImlR+3RxDnMEuzaGWtIpshFnX7NkKaGmqMxvqeksYzVjuYs5qW8zhr27BK6l7pGZgKw==}
+  /yuebing-model@2.7.31:
+    resolution: {integrity: sha512-hPzeMqGBvovblkIzs7RSG9EY+35qRhrQWfS2/7hfRhETyvuhDsLpEDEODTxlz8DXld2KHmSgDfUa4PeOuCzBNA==}
     dev: true
 
-  /yuebing-scan@1.2.21:
-    resolution: {integrity: sha512-R0uPBR8pz4GxQvweZ+VI9/rRXPV/B/X4D7OGs3DxgUxM3RVGDqIdUB6lVwoROHMYbUXuwMsRLmZDI4gWSdRQFw==}
+  /yuebing-scan@1.2.22:
+    resolution: {integrity: sha512-6W3UWSDTJFuEXmhFn1g/Iry6rYyKyyCH20iffdUzdk2pXjSTsFTSXo0gNUrtw/pb72X2uwp1TjkIM/LpEs3vqQ==}
     dev: true
 
   /zilla-util@1.0.1:

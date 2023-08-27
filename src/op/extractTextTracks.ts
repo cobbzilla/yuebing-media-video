@@ -124,6 +124,5 @@ export const load = (
         operation: "extractTextTracks",
         ext: "vtt",
         contentType: "text/vtt",
-        multiFile: true,
     });
 };

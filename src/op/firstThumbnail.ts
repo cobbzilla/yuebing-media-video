@@ -75,7 +75,6 @@ export const load = (
             operation: "firstThumbnail",
             ext: "jpg",
             contentType: "image/jpeg",
-            multiFile: true,
             operationConfig: JSON.stringify({
                 size: "vga",
                 offset: 6,

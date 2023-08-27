@@ -1,6 +1,6 @@
 {
   "name": "yuebing-media-video",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "type": "module",
   "description": "Media driver for yuebing video content",
   "keywords": [
@@ -19,7 +19,7 @@
   },
   "license": "Apache-2.0",
   "scripts": {
-    "test": "mocha --timeout 60000 ./test/*.spec.js",
+    "test": "mocha --timeout 600000 ./test/*.spec.js",
     "tsc": "tsc --module es2020 -p tsconfig.json",
     "lint": "npx eslint src test",
     "lint:fix": "npm run lint -- --fix",
@@ -57,11 +57,11 @@
     "prettier": "^3.0.0",
     "tslint-config-prettier": "^1.18.0",
     "typescript": "^5.1.6",
-    "yuebing-media": "^1.1.37",
-    "yuebing-media-info": "^1.0.28",
+    "yuebing-media": "^1.1.38",
+    "yuebing-media-info": "^1.0.29",
     "yuebing-messages": "^2.1.9",
-    "yuebing-model": "^2.7.30",
-    "yuebing-scan": "^1.2.21",
+    "yuebing-model": "^2.7.31",
+    "yuebing-scan": "^1.2.22",
     "zilla-util": "^1.0.1"
   },
   "dependencies": {

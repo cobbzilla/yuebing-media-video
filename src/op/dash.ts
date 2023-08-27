@@ -164,7 +164,6 @@ export const load = (
         ext: "mpd",
         contentType: "application/dash+xml",
         primary: true,
-        multiFile: true,
         additionalAssets: [
             "^dash_mp4~init-stream\\d+.m4s$",
             "^dash_mp4~chunk-stream\\d+-\\d+.m4s$",

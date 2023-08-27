@@ -83,6 +83,5 @@ export const load = (
         operation: "srt2vttTracks",
         ext: "vtt",
         contentType: "text/vtt",
-        multiFile: true,
     });
 };

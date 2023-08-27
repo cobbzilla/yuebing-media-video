@@ -5,7 +5,7 @@ export const textTrackTypes = ["text/vtt", "application/x-subrip"];
 // Text track output filenames must match this regex for the web player to recognize them.
 // The regex (matching groups), from left to right, are:
 // 1. (\\w+)     : the video profile name (for example vttTracks_extract)
-// 2. (\\w+)     : the multifile index/differentiating hash to avoid collisions when a single profile
+// 2. (\\w+)     : the index/differentiating hash to avoid collisions when a single profile
 //                 produces multiple outputs with the same language
 // 3. (\\w{2,3}) : the 2 (or 3) letter ISO language code
 // 4. (\.sdh)?   : optional, if present, it means the track includes captions for non-verbal audio
