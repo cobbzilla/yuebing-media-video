@@ -157,22 +157,35 @@ export const load = (
     OP_CONFIG_TYPES.dash = VideoDashTypeDef;
     OPERATIONS.dash = VideoDashOperation;
     OP_MAP.dash = dash;
-    DEFAULT_PROFILES.push({
-        name: "dash_mp4",
-        operation: "dash",
-        subProfiles: ["transcode_high_mp4", "transcode_mid_mp4", "transcode_low_mp4", "transcode_min_mp4"],
-        ext: "mpd",
-        contentType: "application/dash+xml",
-        primary: true,
-        additionalAssets: [
-            "^dash_mp4~init-stream\\d+.m4s$",
-            "^dash_mp4~chunk-stream\\d+-\\d+.m4s$",
-            "^media_d+.m3u8$",
-            "^hls_m3u8~master.m3u8$",
-        ],
-        operationConfig: JSON.stringify({
-            manifestAssets: ["dash_mp4.mpd"],
-            hlsProfile: "hls_m3u8",
-        }),
-    });
+    DEFAULT_PROFILES.push(
+        {
+            name: "dash_mp4",
+            operation: "dash",
+            subProfiles: ["transcode_high_mp4", "transcode_mid_mp4", "transcode_low_mp4", "transcode_min_mp4"],
+            ext: "mpd",
+            contentType: "application/dash+xml",
+            primary: true,
+            additionalAssets: [
+                "^dash_mp4~init-stream\\d+.m4s$",
+                "^dash_mp4~chunk-stream\\d+-\\d+.m4s$",
+                "^media_\\d+.m3u8$",
+                "^hls_m3u8~master.m3u8$",
+            ],
+            operationConfig: JSON.stringify({
+                manifestAssets: ["dash_mp4.mpd"],
+                hlsProfile: "hls_m3u8",
+            }),
+        },
+        {
+            name: "hls_m3u8",
+            operation: "hls",
+            primary: true,
+            noop: true,
+            ext: "m3u8",
+            operationConfig: JSON.stringify({
+                manifestAssets: ["hls_m3u8~master.m3u8"],
+            }),
+            contentType: "application/vnd.apple.mpegurl",
+        },
+    );
 };

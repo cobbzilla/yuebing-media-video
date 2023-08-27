@@ -4,6 +4,7 @@ import { expect } from "chai";
 import { newTest, cleanupTest, waitForNonemptyQuery } from "./setup.js";
 import { connectVolume } from "yuebing-model";
 import { destinationPath } from "yuebing-media";
+import { mediaPlugin as videoPlugin } from "../lib/esm/index.js";
 
 let test;
 
@@ -31,8 +32,18 @@ describe("test yuebing-media-video", async () => {
         });
         expect(analyzed[0].status).eq("finished");
 
+        // find transform profiles that should have run
+        const xformProfiles = test.profiles.filter(
+            // enabled, not noop, not analysis, not text-track-related (no files for those)
+            (p) =>
+                p.enabled &&
+                !p.noop &&
+                !videoPlugin.operations()[p.operation].analysis &&
+                !["vtt", "srt"].includes(p.ext),
+        );
+
         // wait for all transform jobs to finish
-        for (const profile of test.profiles) {
+        for (const profile of xformProfiles) {
             const finishedTransforms = await waitForNonemptyQuery(
                 () =>
                     test.profileJobRepo.safeFindBy("asset", test.assetName, {
@@ -43,11 +54,15 @@ describe("test yuebing-media-video", async () => {
             expect(finishedTransforms[0].asset).eq(test.assetName);
 
             // UploadJob should already be finished
-            const uploadJobs = await test.uploadJobRepo.safeFindBy("asset", test.assetName);
-            expect(uploadJobs.length).gte(1);
+            const uploadJobs = await test.uploadJobRepo.safeFindBy("asset", test.assetName, {
+                predicate: (a) => a.profile === profile.name,
+            });
+            expect(uploadJobs.length).gte(1, `expected 1+ uploadJobs for profile=${profile.name}`);
             const uploadJob = uploadJobs[0];
             expect(uploadJob.status).eq("finished");
-            expect(uploadJob.finished).lt(finishedTransforms[0].finished); // upload finishes, then xform
+
+            // upload finishes, then xform; both could finish at the same millisecond
+            expect(uploadJob.finished).lte(finishedTransforms[0].finished);
 
             // todo: based on profile, what can we compare?
             // const origStat = fs.statSync(test.testDir + "/source/moon.mp4");

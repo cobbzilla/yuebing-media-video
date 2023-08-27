@@ -1,6 +1,6 @@
 {
   "name": "yuebing-media-video",
-  "version": "1.1.5",
+  "version": "1.1.6",
   "type": "module",
   "description": "Media driver for yuebing video content",
   "keywords": [
@@ -57,11 +57,11 @@
     "prettier": "^3.0.0",
     "tslint-config-prettier": "^1.18.0",
     "typescript": "^5.1.6",
-    "yuebing-media": "^1.1.38",
-    "yuebing-media-info": "^1.0.29",
+    "yuebing-media": "^1.1.41",
+    "yuebing-media-info": "^1.0.32",
     "yuebing-messages": "^2.1.9",
     "yuebing-model": "^2.7.31",
-    "yuebing-scan": "^1.2.22",
+    "yuebing-scan": "^1.2.25",
     "zilla-util": "^1.0.1"
   },
   "dependencies": {
