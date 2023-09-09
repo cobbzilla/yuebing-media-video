@@ -1,5 +1,5 @@
 import { basename } from "path";
-import { MobilettoConnection } from "mobiletto-base";
+import { MobilettoConnection, MobilettoLogger } from "mobiletto-base";
 import { ALL_LANGS_ARRAY } from "hokey-runtime";
 import {
     ApplyProfileResponse,
@@ -9,12 +9,12 @@ import {
     ParsedProfile,
 } from "yuebing-media";
 import { ProfileJobType } from "yuebing-model";
-import { textTrackRegex } from "../properties.js";
+import { textTrackRegex, FFMPEG_COMMAND } from "../properties.js";
 import { OP_MEDIAINFO } from "./mediainfo.js";
 
 export const VideoExtractTextTracksOperation: MediaOperationType = {
     name: "extractTextTracks",
-    command: "ffmpeg",
+    command: FFMPEG_COMMAND,
     analysis: true, // srt extraction must run during analysis, so if srt2vtt is enabled, srt files will be present
     minFileSize: 7, // minimum size of webvtt file is 7 bytes (and any srt < 7 bytes is also almost certainly invalid)
 };
@@ -28,6 +28,7 @@ const codecForTextTrackContentType = (contentType: string): string | null => {
 };
 
 export const extractTextTracks: MediaOperationFunc = async (
+    logger: MobilettoLogger,
     infile: string,
     profile: ParsedProfile,
     outDir: string,
@@ -41,7 +42,7 @@ export const extractTextTracks: MediaOperationFunc = async (
     const logPrefix = `extractTextTracks(sourcePath=${sourcePath}, profile=${profile.name}):`;
     const codec = codecForTextTrackContentType(profile.contentType);
     if (codec == null) {
-        console.warn(`${logPrefix} skipping (unsupported text track contentType: ${profile.contentType})`);
+        logger.warn(`${logPrefix} skipping (unsupported text track contentType: ${profile.contentType})`);
         return {};
     }
     if (!analysisResults || analysisResults.length === 0) {
@@ -51,29 +52,29 @@ export const extractTextTracks: MediaOperationFunc = async (
     const textTracks = [];
     const mediainfoJob = analysisResults.find((r) => r.operation === OP_MEDIAINFO);
     if (!mediainfoJob) {
-        console.warn(`${logPrefix} skipping (no job with profile.operation=mediainfo found)`);
+        logger.warn(`${logPrefix} skipping (no job with profile.operation=mediainfo found)`);
         return {};
     }
     if (!mediainfoJob.result) {
-        console.warn(`${logPrefix} skipping job.result was undefined for mediainfoJob=${mediainfoJob.name}`);
+        logger.warn(`${logPrefix} skipping job.result was undefined for mediainfoJob=${mediainfoJob.name}`);
         return {};
     }
     const mediainfo = JSON.parse(mediainfoJob.result);
     if (!(mediainfo && "media" in mediainfo && "track" in mediainfo.media)) {
-        console.warn(`${logPrefix} skipping (no tracks found)`);
+        logger.warn(`${logPrefix} skipping (no tracks found)`);
         return {};
     }
     for (const track of mediainfo.media.track) {
         if (!("@type" in track && track["@type"] === "Text")) {
-            console.debug(`${logPrefix} skipping non-text track: ${JSON.stringify(track)}`);
+            logger.debug(`${logPrefix} skipping non-text track: ${JSON.stringify(track)}`);
             continue;
         }
         if (!("Format" in track)) {
-            console.warn(`${logPrefix} skipping text track (no Format): ${JSON.stringify(track)}`);
+            logger.warn(`${logPrefix} skipping text track (no Format): ${JSON.stringify(track)}`);
             continue;
         }
         if (!("Language" in track && ALL_LANGS_ARRAY.includes(track.Language))) {
-            console.warn(
+            logger.warn(
                 `${logPrefix} skipping unsupported text track (expected valid Language): ${JSON.stringify(track)}`,
             );
             continue;
@@ -82,7 +83,7 @@ export const extractTextTracks: MediaOperationFunc = async (
     }
 
     if (textTracks.length === 0) {
-        console.info(`${logPrefix} no supported text tracks found, skipping`);
+        logger.info(`${logPrefix} no supported text tracks found, skipping`);
         return {};
     }
 
@@ -101,7 +102,7 @@ export const extractTextTracks: MediaOperationFunc = async (
         const destOutfileBase = basename(langOutputFile);
         // sanity check
         if (!destOutfileBase.match(textTrackRegex)) {
-            console.error(
+            logger.error(
                 `${logPrefix} invalid destOutfileBase (${destOutfileBase}) did not match textTrackRegex=${textTrackRegex}`,
             );
             continue;

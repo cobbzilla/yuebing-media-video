@@ -7,7 +7,8 @@ import {
 } from "yuebing-media";
 import { MobilettoOrmFieldDefConfigs, MobilettoOrmTypeDef } from "mobiletto-orm-typedef";
 import { VideoProfileTranscodeType } from "../type/VideoProfileTranscodeType.js";
-import { ffmpegSizeConfig } from "../properties.js";
+import { FFMPEG_COMMAND, ffmpegSizeConfig } from "../properties.js";
+import { MobilettoLogger } from "mobiletto-base";
 
 const FFMPEG_BITRATE_REGEX = /^\d+([bkMG]|(\.\d+[kMG]))?$/;
 
@@ -62,11 +63,12 @@ export const VideoTranscodeTypeDef: MobilettoOrmTypeDef = new MobilettoOrmTypeDe
 
 export const VideoTranscodeOperation: MediaOperationType = {
     name: "transcode",
-    command: "ffmpeg",
+    command: FFMPEG_COMMAND,
     minFileSize: 1024 * 64,
 };
 
 export const transcode: MediaOperationFunc = async (
+    logger: MobilettoLogger,
     infile: string,
     profile: ParsedProfile,
     outDir: string,

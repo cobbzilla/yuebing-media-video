@@ -1,9 +1,10 @@
 import { ALL_LANGS_ARRAY, ISO_639 } from "hokey-runtime";
 import { LOCALE_LANGS } from "hokey-lang";
+import { MobilettoLogger } from "mobiletto-base";
 
 const LANG_MAP: Record<string, string> = {};
 
-export const getLangMap = (): Record<string, string> => {
+export const getLangMap = (logger: MobilettoLogger): Record<string, string> => {
     if (Object.keys(LANG_MAP).length > 0) {
         return LANG_MAP;
     }
@@ -26,14 +27,16 @@ export const getLangMap = (): Record<string, string> => {
             LANG_MAP[langCode] = ISO_639[langCode];
         }
     } catch (e) {
-        console.error(`getLangMap: error: ${JSON.stringify(e)}`);
+        if (logger && logger.isErrorEnabled()) {
+            logger.error(`getLangMap: error: ${JSON.stringify(e)}`);
+        }
         throw e;
     }
     return LANG_MAP;
 };
 
-export const toLang = (lang: string): string => {
-    const langMap = getLangMap();
+export const toLang = (lang: string, logger: MobilettoLogger): string => {
+    const langMap = getLangMap(logger);
     if (langMap[lang]) {
         return langMap[lang];
     }
@@ -41,6 +44,8 @@ export const toLang = (lang: string): string => {
     if (langMap[lcLang]) {
         return langMap[lcLang];
     }
-    console.warn(`toLang(${lang}): unrecognized, returning as-is`);
+    if (logger && logger.isWarningEnabled()) {
+        logger.warn(`toLang(${lang}): unrecognized, returning as-is`);
+    }
     return lang;
 };

@@ -1,6 +1,6 @@
 import { basename, dirname } from "path";
 import { existsSync, writeFileSync } from "fs";
-import { MobilettoConnection } from "mobiletto-base";
+import { MobilettoConnection, MobilettoLogger } from "mobiletto-base";
 import {
     ApplyProfileResponse,
     MediaOperationFunc,
@@ -18,6 +18,7 @@ export const VideoCopyTextTracksOperation: MediaOperationType = {
 };
 
 export const copyTextTracks: MediaOperationFunc = async (
+    logger: MobilettoLogger,
     infile: string,
     profile: ParsedProfile,
     outDir: string,
@@ -37,13 +38,13 @@ export const copyTextTracks: MediaOperationFunc = async (
         const m = f.type && f.type === "file" && f.name ? filename.match(TRACK_REGEX) : false;
         if (m && m[0] === filename) {
             const sdh = typeof m[5] !== "undefined" && m[5] === "sdh" ? ".sdh" : "";
-            const lang = typeof m[3] !== "undefined" ? toLang(m[3]) : "default";
+            const lang = typeof m[3] !== "undefined" ? toLang(m[3], logger) : "default";
             const index = String(i).padStart(3, "0");
             const destOutfile = `${outDir}/${profile.name}~${index}.${lang}${sdh}.${profile.ext}`;
             const destOutfileBase = basename(destOutfile);
             // sanity check
             if (!destOutfileBase.match(textTrackRegex)) {
-                console.warn(
+                logger.warn(
                     `copyTextTracks: invalid destOutfileBase (${destOutfileBase}) did not match textTrackRegex=${textTrackRegex}`,
                 );
                 continue;

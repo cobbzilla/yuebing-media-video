@@ -1,6 +1,6 @@
 import { basename, dirname } from "path";
 import { existsSync, writeFileSync } from "fs";
-import { MobilettoConnection } from "mobiletto-base";
+import { MobilettoConnection, MobilettoLogger } from "mobiletto-base";
 import { sha } from "mobiletto-orm-typedef";
 import {
     ApplyProfileResponse,
@@ -22,6 +22,7 @@ export const VideoSrt2VttTracksOperation: MediaOperationType = {
 const SRT_TRACK_REGEX = new RegExp("(.+?)(\\.(\\w{2}(\\.(sdh))?))?\\.srt$", "ui");
 
 export const srt2vttTextTracks: MediaOperationFunc = async (
+    logger: MobilettoLogger,
     infile: string,
     profile: ParsedProfile,
     outDir: string,
@@ -43,13 +44,13 @@ export const srt2vttTextTracks: MediaOperationFunc = async (
         const srtMatch = f.type && f.type === "file" && f.name ? filename.match(SRT_TRACK_REGEX) : false;
         if (srtMatch && srtMatch[0] === filename) {
             const sdh = typeof srtMatch[5] !== "undefined" && srtMatch[5] === "sdh" ? ".sdh" : "";
-            const lang = typeof srtMatch[3] !== "undefined" ? toLang(srtMatch[3]) : "default";
+            const lang = typeof srtMatch[3] !== "undefined" ? toLang(srtMatch[3], logger) : "default";
             const vttHash = sha(profile.name + i + " " + lang + sdh);
             const destOutfile = `${outDir}/${profile.name}~${vttHash}.${lang}${sdh}.vtt`;
             const destOutfileBase = basename(destOutfile);
             // sanity check
             if (!destOutfileBase.match(textTrackRegex)) {
-                console.error(
+                logger.error(
                     `srt2vttTracks: invalid destOutfileBase (${destOutfileBase}) did not match textTrackRegex=${textTrackRegex}`,
                 );
                 continue;
@@ -61,7 +62,7 @@ export const srt2vttTextTracks: MediaOperationFunc = async (
                     writeFileSync(destOutfile, vttData);
                     converted.push({ source: f.name, dest: destOutfile });
                 } catch (e) {
-                    console.error(`srt2vttTracks: error: ${JSON.stringify(e)}`);
+                    logger.error(`srt2vttTracks: error: ${JSON.stringify(e)}`);
                 }
             } else {
                 alreadyExist.push({ source: f.name, dest: destOutfile });

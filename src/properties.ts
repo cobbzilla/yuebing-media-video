@@ -1,3 +1,5 @@
+export const FFMPEG_COMMAND = "ffmpeg";
+
 // assets with these content-types will be treated as text-tracks
 // by the web video player
 export const textTrackTypes = ["text/vtt", "application/x-subrip"];

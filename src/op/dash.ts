@@ -1,3 +1,4 @@
+import { MobilettoLogger } from "mobiletto-base";
 import { MobilettoOrmFieldDefConfigs, MobilettoOrmTypeDef } from "mobiletto-orm-typedef";
 import {
     ApplyProfileResponse,
@@ -7,7 +8,8 @@ import {
     ParsedProfile,
 } from "yuebing-media";
 import { VideoProfileDashType } from "../type/VideoProfileDashType.js";
-import { VideoProfileTranscodeType } from "../type/VideoProfileTranscodeType";
+import { VideoProfileTranscodeType } from "../type/VideoProfileTranscodeType.js";
+import { FFMPEG_COMMAND } from "../properties.js";
 
 export const VideoDashTypeDefFields: MobilettoOrmFieldDefConfigs = {
     manifestAssets: {
@@ -38,11 +40,12 @@ export const VideoDashTypeDef: MobilettoOrmTypeDef = new MobilettoOrmTypeDef({
 
 export const VideoDashOperation: MediaOperationType = {
     name: "dash",
-    command: "ffmpeg",
+    command: FFMPEG_COMMAND,
     minFileSize: 128,
 };
 
 export const dash: MediaOperationFunc = async (
+    logger: MobilettoLogger,
     infile: string,
     profile: ParsedProfile,
     outDir: string,
