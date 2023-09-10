@@ -9,12 +9,12 @@ import {
     ParsedProfile,
 } from "yuebing-media";
 import { ProfileJobType } from "yuebing-model";
-import { textTrackRegex, FFMPEG_COMMAND } from "../properties.js";
+import { textTrackRegex, ffmpegCommand } from "../properties.js";
 import { OP_MEDIAINFO } from "./mediainfo.js";
 
 export const VideoExtractTextTracksOperation: MediaOperationType = {
     name: "extractTextTracks",
-    command: FFMPEG_COMMAND,
+    command: ffmpegCommand(),
     analysis: true, // srt extraction must run during analysis, so if srt2vtt is enabled, srt files will be present
     minFileSize: 7, // minimum size of webvtt file is 7 bytes (and any srt < 7 bytes is also almost certainly invalid)
 };

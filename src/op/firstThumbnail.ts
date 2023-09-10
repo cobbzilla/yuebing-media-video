@@ -7,7 +7,7 @@ import {
 } from "yuebing-media";
 import { MobilettoOrmFieldDefConfigs, MobilettoOrmTypeDef } from "mobiletto-orm-typedef";
 import { VideoProfileFirstThumbnailType } from "../type/VideoProfileFirstThumbnailType.js";
-import { FFMPEG_COMMAND, ffmpegSizeConfig } from "../properties.js";
+import { ffmpegCommand, ffmpegSizeConfig } from "../properties.js";
 import { MobilettoLogger } from "mobiletto-base";
 
 export const VideoFirstThumbnailTypeDefFields: MobilettoOrmFieldDefConfigs = {
@@ -31,7 +31,7 @@ export const VideoFirstThumbnailTypeDef: MobilettoOrmTypeDef = new MobilettoOrmT
 
 export const VideoFirstThumbnailOperation: MediaOperationType = {
     name: "firstThumbnail",
-    command: FFMPEG_COMMAND,
+    command: ffmpegCommand(),
     minFileSize: 64,
 };
 

@@ -1,5 +1,5 @@
-import { MediaOperationFunc, MediaOperationType, MediaPluginProfileType } from "yuebing-media";
 import { MobilettoOrmFieldDefConfigs, MobilettoOrmTypeDef } from "mobiletto-orm-typedef";
+import { MediaOperationFunc, MediaOperationType, MediaPluginProfileType } from "yuebing-media";
 export declare const VideoTranscodeTypeDefFields: MobilettoOrmFieldDefConfigs;
 export declare const VideoTranscodeTypeDef: MobilettoOrmTypeDef;
 export declare const VideoTranscodeOperation: MediaOperationType;

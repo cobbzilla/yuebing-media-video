@@ -74,11 +74,14 @@ devDependencies:
     specifier: ^5.1.6
     version: 5.1.6
   yuebing-media:
-    specifier: ^1.1.45
-    version: 1.1.45
+    specifier: ^1.1.46
+    version: 1.1.46
   yuebing-media-info:
-    specifier: ^1.0.33
-    version: 1.0.33
+    specifier: ^1.0.34
+    version: 1.0.34
+  yuebing-media-info-util:
+    specifier: ^1.0.0
+    version: 1.0.0
   yuebing-messages:
     specifier: ^2.1.24
     version: 2.1.24
@@ -86,14 +89,14 @@ devDependencies:
     specifier: ^2.7.58
     version: 2.7.58
   yuebing-scan:
-    specifier: ^1.2.33
-    version: 1.2.33
+    specifier: ^1.2.35
+    version: 1.2.35
   yuebing-server-util:
     specifier: ^1.0.3
     version: 1.0.3
   zilla-util:
-    specifier: ^1.0.1
-    version: 1.0.1
+    specifier: ^1.0.4
+    version: 1.0.4
 
 packages:
 
@@ -1711,12 +1714,16 @@ packages:
     engines: {node: '>=10'}
     dev: true
 
-  /yuebing-media-info@1.0.33:
-    resolution: {integrity: sha512-pQZbVBInscyGba6YwKWWrv3Au/PGQIkKxknq0g7kz2bgQSXPkTHOA+QNhkvds4p0kB2rGs3ai2yoI2rlBR0oKA==}
+  /yuebing-media-info-util@1.0.0:
+    resolution: {integrity: sha512-Fu00sqQ0AIcXwkxLPxx/fZiK5Wip3WUvhbbcPEKZGRuW2ARkNkYT8Z9lRoJ3t+KlcNLqNfl/4dkk5VfZTjuQQw==}
     dev: true
 
-  /yuebing-media@1.1.45:
-    resolution: {integrity: sha512-7O7DhC6QogHXmBKI4F+dY6wg4d88aloNo4S5YB3RNd1o0ER8g4TIB3RWMq8zC2QQRPSDUxj3yOTktZBO8xeJYw==}
+  /yuebing-media-info@1.0.34:
+    resolution: {integrity: sha512-zccbqGeXiTeQIoykrtjss2DYL9KaEjEtKqLsPAg0vrCRBJa0OOjHzatAiyM7Rj+LtFiT/6eBH5e/lzqznxNqWQ==}
+    dev: true
+
+  /yuebing-media@1.1.46:
+    resolution: {integrity: sha512-L/xkKpf9BCfSSkGkXvTW6WWKh5/olcvhWc/R8QNGcSZQiQwmtN81MjIMG6xkOVRiKJohDPvxF2Fe9JHj4urUQQ==}
     dev: true
 
   /yuebing-messages@2.1.24:
@@ -1729,14 +1736,14 @@ packages:
     resolution: {integrity: sha512-oK21pZhM1EUNjmGbEbDzOaDaEoK3hgjd7+EopkIte89qJQ7fjUT+0KjK+m6t8UpZ1cn7e4nY7aSPPr1yfp+Ckg==}
     dev: true
 
-  /yuebing-scan@1.2.33:
-    resolution: {integrity: sha512-cNGXLXhRYIjT7Rh05siKFso2pyydcIfBRofFpT+SzUxw7GDIR07wt02ns5naurxyMay0pRWVs/M19bUzJiyMbQ==}
+  /yuebing-scan@1.2.35:
+    resolution: {integrity: sha512-1rBCl/du+zmwguLI+7UbeqU/8y+zbjRwcZwTIOuMyXcLvDRZe9/L3wYTL/slToqnK1XRSbksK2zzVPlcKZEDMw==}
     dev: true
 
   /yuebing-server-util@1.0.3:
     resolution: {integrity: sha512-m7pfjCnA838diXnSrEZACujNEykcvzEunBFZqzkJvdQ2+rrxJmAOZyXr9IxD7Mfly9AlR45RSzKCiRTLN5b3Lg==}
     dev: true
 
-  /zilla-util@1.0.1:
-    resolution: {integrity: sha512-BMCVSUERMZeez+ncDNbvlEMyD/g43+IYmHedxu0TnJTTuhjqLrU+7DW/rmzX9v/pf1ITUjflpvWvStEQC4lp+Q==}
+  /zilla-util@1.0.4:
+    resolution: {integrity: sha512-Af2BYv4//tFryrrQzzwujnIolpvzHdY3r+RzF4fZeae/EoPWomJIkUN0ehoY7S51ndMLkfToI/1iFe+e9RM1VQ==}
     dev: true

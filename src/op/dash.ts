@@ -1,4 +1,4 @@
-import { MobilettoLogger } from "mobiletto-base";
+import { MobilettoConnection, MobilettoLogger } from "mobiletto-base";
 import { MobilettoOrmFieldDefConfigs, MobilettoOrmTypeDef } from "mobiletto-orm-typedef";
 import {
     ApplyProfileResponse,
@@ -9,7 +9,9 @@ import {
 } from "yuebing-media";
 import { VideoProfileDashType } from "../type/VideoProfileDashType.js";
 import { VideoProfileTranscodeType } from "../type/VideoProfileTranscodeType.js";
-import { FFMPEG_COMMAND } from "../properties.js";
+import { ffmpegWidth, ffmpegBitrate, ffmpegCommand } from "../properties.js";
+import { MediaInfo } from "yuebing-media-info-util";
+import { ProfileJobType } from "yuebing-model";
 
 export const VideoDashTypeDefFields: MobilettoOrmFieldDefConfigs = {
     manifestAssets: {
@@ -40,7 +42,7 @@ export const VideoDashTypeDef: MobilettoOrmTypeDef = new MobilettoOrmTypeDef({
 
 export const VideoDashOperation: MediaOperationType = {
     name: "dash",
-    command: FFMPEG_COMMAND,
+    command: ffmpegCommand(),
     minFileSize: 128,
 };
 
@@ -49,6 +51,9 @@ export const dash: MediaOperationFunc = async (
     infile: string,
     profile: ParsedProfile,
     outDir: string,
+    sourcePath: string,
+    conn?: MobilettoConnection,
+    analysisResults?: ProfileJobType[],
 ): Promise<ApplyProfileResponse> => {
     if (!profile.operationConfigObject) throw new Error(`dash: profile.operationConfigObject not defined`);
     const config = profile.operationConfigObject as VideoProfileDashType;
@@ -57,12 +62,64 @@ export const dash: MediaOperationFunc = async (
         throw new Error(`dash: no subProfiles specified`);
     }
 
+    if (!analysisResults || analysisResults.length === 0) {
+        throw new Error(`dash: expected analysisResults for PROFILE=${profile.name}`);
+    }
+    const mediainfoJobs = analysisResults.filter((r) => r.operation === "mediainfo");
+    if (mediainfoJobs.length !== 1) {
+        throw new Error(
+            `dash: expected exactly 1 mediainfo analysisResult for PROFILE=${profile.name} COUNT=${mediainfoJobs.length}`,
+        );
+    }
+    const mediainfoJob = mediainfoJobs[0];
+    if (!mediainfoJob.result) {
+        throw new Error(`dash: expected mediainfo analysisResult had no results for PROFILE=${profile.name}`);
+    }
+    const mediainfo = new MediaInfo(mediainfoJob.result);
+    const sourceBitrate = mediainfo.bitrate();
+    if (!sourceBitrate) {
+        throw new Error(`dash: expected bitrate in mediainfo analysisResult for PROFILE=${profile.name}`);
+    }
+    const sourceWidth = mediainfo.width();
+    if (!sourceWidth) {
+        throw new Error(`dash: expected width in mediainfo analysisResult for PROFILE=${profile.name}`);
+    }
+
+    // only select subProfiles where:
+    // 1. the bitrate is lower than the source bitrate, or
+    // 2. the width is smaller than the source width, or
+    // 3. it's the last subProfile (minimal) which is always selected
+    const subProfiles: ParsedProfile[] = [];
+    for (let i = 0; i < profile.subProfileObjects.length; i++) {
+        const subProfile = profile.subProfileObjects[i];
+        if (i === profile.subProfileObjects.length - 1) {
+            subProfiles.push(subProfile);
+        } else {
+            const subConfig: VideoProfileTranscodeType = subProfile.operationConfigObject as VideoProfileTranscodeType;
+            const profileBitrate = ffmpegBitrate(subConfig.videoBitrate);
+            if (profileBitrate && profileBitrate <= sourceBitrate) {
+                subProfiles.push(subProfile);
+            } else {
+                const profileWidth = ffmpegWidth(subConfig.videoSize);
+                if (profileWidth && profileWidth <= sourceWidth) {
+                    subProfiles.push(subProfile);
+                } else {
+                    if (logger.isDebugEnabled()) {
+                        logger.debug(
+                            `dash: skipping SUB_PROFILE=${subProfile.name} because source bitrate/width is less than profile`,
+                        );
+                    }
+                }
+            }
+        }
+    }
+
     const args = [];
     args.push("-i");
     args.push(infile);
 
-    for (let i = 0; i < profile.subProfileObjects.length; i++) {
-        const subProfile = profile.subProfileObjects[i];
+    for (let i = 0; i < subProfiles.length; i++) {
+        const subProfile = subProfiles[i];
         if (!subProfile.operationConfigObject) {
             throw new Error(`dash: no subProfile.operationConfigObject for subProfile=${subProfile.name}`);
         }

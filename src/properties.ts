@@ -1,4 +1,22 @@
+import { fileURLToPath } from "url";
+import path from "path";
+
 export const FFMPEG_COMMAND = "ffmpeg";
+export const MOCK_FFMPEG_COMMAND = "ffmpeg-mock.sh";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const SCRIPT_DIR = `${__dirname}/../../scripts`;
+
+export const ffmpegCommand = () => {
+    if (
+        process.env.MOCHA_COLORS ||
+        (process.env.NODE_OPTIONS && process.env.NODE_OPTIONS.includes("debugConnector.js"))
+    ) {
+        return SCRIPT_DIR + "/" + MOCK_FFMPEG_COMMAND;
+    }
+    return FFMPEG_COMMAND;
+};
 
 // assets with these content-types will be treated as text-tracks
 // by the web video player
@@ -14,6 +32,49 @@ export const textTrackTypes = ["text/vtt", "application/x-subrip"];
 // 5. (vtt|srt)  : vtt and srt are the only file extensions supported by yuebing; the web player only
 //                 supports vtt
 export const textTrackRegex: RegExp = new RegExp(`^(\\w+)~(\\w+).(\\w{2,3})(.sdh)?.(vtt|srt)$`);
+
+export const FFMPEG_BITRATE_REGEX = /^[1-9]\d*([bkMG]|(\.\d+[kMG]))?$/;
+
+export const ffmpegBitrate = (rate: string): number | undefined => {
+    if (FFMPEG_BITRATE_REGEX.test(rate)) {
+        const suffix = rate.substring(rate.length - 1);
+        switch (suffix) {
+            case "G":
+                return 1000000000 * +rate.substring(0, rate.length - 1);
+            case "M":
+                return 1000000 * +rate.substring(0, rate.length - 1);
+            case "k":
+                return 1000 * +rate.substring(0, rate.length - 1);
+            case "b":
+                return +rate.substring(0, rate.length - 1);
+            default:
+                return +rate; // raw bitrate, without suffix
+        }
+    }
+    return undefined;
+};
+
+export const widthByHeightRegex = /^[1-9]\d+x[1-9]\d+$/;
+
+export const ffmpegWidth = (size: string): number | undefined => {
+    if (ffmpegSizes[size]) {
+        size = ffmpegSizes[size];
+    }
+    if (widthByHeightRegex.test(size)) {
+        return +size.substring(0, size.indexOf("x"));
+    }
+    return undefined;
+};
+
+export const ffmpegHeight = (size: string): number | undefined => {
+    if (ffmpegSizes[size]) {
+        size = ffmpegSizes[size];
+    }
+    if (widthByHeightRegex.test(size)) {
+        return +size.substring(size.indexOf("x") + 1);
+    }
+    return undefined;
+};
 
 export const ffmpegSizes: Record<string, string> = {
     ntsc: "720x480",
