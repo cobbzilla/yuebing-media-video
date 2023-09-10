@@ -10,6 +10,7 @@ const SCRIPT_DIR = `${__dirname}/../../scripts`;
 
 export const ffmpegCommand = () => {
     if (
+        process.env.MOCK_FFMPEG ||
         process.env.MOCHA_COLORS ||
         (process.env.NODE_OPTIONS && process.env.NODE_OPTIONS.includes("debugConnector.js"))
     ) {
