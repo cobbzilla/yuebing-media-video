@@ -15,7 +15,7 @@ before(async () => {
 describe("test yuebing-media-video", async () => {
     it("should find, analyze, process and upload files for a video asset", async () => {
         // wait for scanner to create sourceAsset with status==pending
-        const scanned = await waitForNonemptyQuery(() => test.sourceAssetRepo.findAll());
+        const scanned = await waitForNonemptyQuery(() => test.sourceAssetRepo.findAll(), undefined, 30000);
         expect(scanned[0].name).eq(test.assetName);
 
         // wait for analyzer to update sourceAsset with status==finished

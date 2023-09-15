@@ -74,11 +74,11 @@ devDependencies:
     specifier: ^5.1.6
     version: 5.1.6
   yuebing-media:
-    specifier: ^1.1.46
-    version: 1.1.46
+    specifier: ^1.1.47
+    version: 1.1.47
   yuebing-media-info:
-    specifier: ^1.0.34
-    version: 1.0.34
+    specifier: ^1.0.35
+    version: 1.0.35
   yuebing-media-info-util:
     specifier: ^1.0.0
     version: 1.0.0
@@ -86,17 +86,17 @@ devDependencies:
     specifier: ^2.1.24
     version: 2.1.24
   yuebing-model:
-    specifier: ^2.7.58
-    version: 2.7.58
+    specifier: ^2.7.63
+    version: 2.7.63
   yuebing-scan:
-    specifier: ^1.2.35
-    version: 1.2.35
+    specifier: ^1.2.36
+    version: 1.2.36
   yuebing-server-util:
     specifier: ^1.0.3
     version: 1.0.3
   zilla-util:
-    specifier: ^1.0.4
-    version: 1.0.4
+    specifier: ^1.0.10
+    version: 1.0.10
 
 packages:
 
@@ -491,7 +491,7 @@ packages:
       node-abort-controller: 3.1.1
       semver: 7.5.4
       tslib: 2.6.2
-      uuid: 9.0.0
+      uuid: 9.0.1
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -1219,7 +1219,7 @@ packages:
     resolution: {integrity: sha512-yBaYtaQpNCO9aY8t56+QVlTBtcFDaf9L3/4bGTyus2dsLUEe9iv9Ahs3KpOa6saRhDxmo5pOylBTBwqu5YaU+A==}
     dependencies:
       shasum: 1.0.2
-      uuid: 9.0.0
+      uuid: 9.0.1
     dev: true
 
   /mobiletto-orm@2.2.53:
@@ -1633,8 +1633,8 @@ packages:
       punycode: 2.3.0
     dev: true
 
-  /uuid@9.0.0:
-    resolution: {integrity: sha512-MXcSTerfPa4uqyzStbRoTgt5XIe3x5+42+q1sDuy3R5MDk66URdLMOZe5aPX/SQd+kuYAh0FdP/pO28IkQyTeg==}
+  /uuid@9.0.1:
+    resolution: {integrity: sha512-b+1eJOlsR9K8HJpow9Ok3fiWOWSIcIzXodvv0rQjVoOVNpWMpxf1wZNpt4y9h10odCNrqnYp1OBzRktckBe3sA==}
     hasBin: true
     dev: true
 
@@ -1718,12 +1718,12 @@ packages:
     resolution: {integrity: sha512-Fu00sqQ0AIcXwkxLPxx/fZiK5Wip3WUvhbbcPEKZGRuW2ARkNkYT8Z9lRoJ3t+KlcNLqNfl/4dkk5VfZTjuQQw==}
     dev: true
 
-  /yuebing-media-info@1.0.34:
-    resolution: {integrity: sha512-zccbqGeXiTeQIoykrtjss2DYL9KaEjEtKqLsPAg0vrCRBJa0OOjHzatAiyM7Rj+LtFiT/6eBH5e/lzqznxNqWQ==}
+  /yuebing-media-info@1.0.35:
+    resolution: {integrity: sha512-L29e6oyOs49jlRp0Ns60cmPqDguUROV0pxJOAhcm6CUboQynu5S9eDAYbZVKLp+d0cOloX9PYIENTve5YzJqtA==}
     dev: true
 
-  /yuebing-media@1.1.46:
-    resolution: {integrity: sha512-L/xkKpf9BCfSSkGkXvTW6WWKh5/olcvhWc/R8QNGcSZQiQwmtN81MjIMG6xkOVRiKJohDPvxF2Fe9JHj4urUQQ==}
+  /yuebing-media@1.1.47:
+    resolution: {integrity: sha512-Wn7JK/6fVNzxedyKA7mFWHKn3OXASGUoFc0WEjRBfEqHnY7R3IRMTCkhypbD05rjGEV/bbmCrvJ3TTDucwj1OQ==}
     dev: true
 
   /yuebing-messages@2.1.24:
@@ -1732,18 +1732,18 @@ packages:
       hokey-runtime: 1.0.9
     dev: true
 
-  /yuebing-model@2.7.58:
-    resolution: {integrity: sha512-oK21pZhM1EUNjmGbEbDzOaDaEoK3hgjd7+EopkIte89qJQ7fjUT+0KjK+m6t8UpZ1cn7e4nY7aSPPr1yfp+Ckg==}
+  /yuebing-model@2.7.63:
+    resolution: {integrity: sha512-JuBu5EQqk227JPYettN8KAtS7qIsLFgxIUC7D0edZVV0UNendD7ZTWVQ8Hggsr4gCLmCH85iLueoJx2ECr6xbw==}
     dev: true
 
-  /yuebing-scan@1.2.35:
-    resolution: {integrity: sha512-1rBCl/du+zmwguLI+7UbeqU/8y+zbjRwcZwTIOuMyXcLvDRZe9/L3wYTL/slToqnK1XRSbksK2zzVPlcKZEDMw==}
+  /yuebing-scan@1.2.36:
+    resolution: {integrity: sha512-EJyNXvmDUEKPh4xwtRPkPIVHVo+qumK3E7j1jOwXE3UC2K9t1JfBNmNMvFGn4aqU2RfYOQv+YX7Bab3BHepMUA==}
     dev: true
 
   /yuebing-server-util@1.0.3:
     resolution: {integrity: sha512-m7pfjCnA838diXnSrEZACujNEykcvzEunBFZqzkJvdQ2+rrxJmAOZyXr9IxD7Mfly9AlR45RSzKCiRTLN5b3Lg==}
     dev: true
 
-  /zilla-util@1.0.4:
-    resolution: {integrity: sha512-Af2BYv4//tFryrrQzzwujnIolpvzHdY3r+RzF4fZeae/EoPWomJIkUN0ehoY7S51ndMLkfToI/1iFe+e9RM1VQ==}
+  /zilla-util@1.0.10:
+    resolution: {integrity: sha512-azYGaxQSRYEOi1yjhCcxBOWuQJqd/0wBJ+QNAX0SwWjYu3Ckyw2K0OvSgdWFHFdILKI7e9PvRECT6u4nDeEsHw==}
     dev: true
