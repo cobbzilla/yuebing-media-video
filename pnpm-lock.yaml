@@ -59,8 +59,8 @@ devDependencies:
     specifier: ^2.4.16
     version: 2.4.16
   mobiletto-orm-typedef-gen:
-    specifier: ^2.4.11
-    version: 2.4.11
+    specifier: ^2.4.12
+    version: 2.4.12
   mocha:
     specifier: ^10.2.0
     version: 10.2.0
@@ -83,20 +83,20 @@ devDependencies:
     specifier: ^1.0.0
     version: 1.0.0
   yuebing-messages:
-    specifier: ^2.1.24
-    version: 2.1.24
+    specifier: ^2.1.26
+    version: 2.1.26
   yuebing-model:
-    specifier: ^2.7.63
-    version: 2.7.63
+    specifier: ^2.7.67
+    version: 2.7.67
   yuebing-scan:
-    specifier: ^1.2.36
-    version: 1.2.36
+    specifier: ^1.2.39
+    version: 1.2.39
   yuebing-server-util:
     specifier: ^1.0.3
     version: 1.0.3
   zilla-util:
-    specifier: ^1.0.10
-    version: 1.0.10
+    specifier: ^1.0.12
+    version: 1.0.12
 
 packages:
 
@@ -1211,8 +1211,8 @@ packages:
     resolution: {integrity: sha512-Rhff0rMRj04HWb7cm1MkAJnuWc8elFBBEen/gjXn9O8S7S9Nro2lPB6+sy0GjujVrl4dL4PEupDk8/C+tyrN8Q==}
     dev: true
 
-  /mobiletto-orm-typedef-gen@2.4.11:
-    resolution: {integrity: sha512-0UCOaUBNmE5/yh5ALd9iaLnR6EnltyEVNrtY2KGmuQJ29j9WYnAukUyGAXHVgpGZUXd18N0cPmaHHNqJ/2ERcQ==}
+  /mobiletto-orm-typedef-gen@2.4.12:
+    resolution: {integrity: sha512-LGP4n8h0MDiahQR46XWMfNLyAQZbJit8wZlmDumuqMxSr9pNJzmPKDWjmoct1+QfSgB82Vl+QSfxt0le3Vqv4A==}
     dev: true
 
   /mobiletto-orm-typedef@2.4.16:
@@ -1726,24 +1726,24 @@ packages:
     resolution: {integrity: sha512-Wn7JK/6fVNzxedyKA7mFWHKn3OXASGUoFc0WEjRBfEqHnY7R3IRMTCkhypbD05rjGEV/bbmCrvJ3TTDucwj1OQ==}
     dev: true
 
-  /yuebing-messages@2.1.24:
-    resolution: {integrity: sha512-vT41j/Uosv0hQOs9cey7NiNumjPCCWeBpJtapO9WHCsTNoWlPqCxHQLEyZokt9PCWI6UTYnTUeB5YduVg8Btww==}
+  /yuebing-messages@2.1.26:
+    resolution: {integrity: sha512-u0D4FnjQ2t02csNbBsiCQOq+A57G8H23wXR9VOCr2uhlGG1bUa3cYmlCr+mn3vflHWh2oWN7zQTvgjTrcgFNgg==}
     dependencies:
       hokey-runtime: 1.0.9
     dev: true
 
-  /yuebing-model@2.7.63:
-    resolution: {integrity: sha512-JuBu5EQqk227JPYettN8KAtS7qIsLFgxIUC7D0edZVV0UNendD7ZTWVQ8Hggsr4gCLmCH85iLueoJx2ECr6xbw==}
+  /yuebing-model@2.7.67:
+    resolution: {integrity: sha512-JxTUUxfVHBx1LuGoHjqYTygr1kVxpFN5Jw8nJFdM4XAnVdoOOskQXLTRu6mLHvaFcnHetIU41kOMHRjIdWqqSA==}
     dev: true
 
-  /yuebing-scan@1.2.36:
-    resolution: {integrity: sha512-EJyNXvmDUEKPh4xwtRPkPIVHVo+qumK3E7j1jOwXE3UC2K9t1JfBNmNMvFGn4aqU2RfYOQv+YX7Bab3BHepMUA==}
+  /yuebing-scan@1.2.39:
+    resolution: {integrity: sha512-SCNKeWggSpJNbJa6GdDYGdVi89Ytg+MfNKoUjcKc1BM3HjL6/hYuMoPAV5p2hizUwYKGYqMzjblaFKTkKZPZ/A==}
     dev: true
 
   /yuebing-server-util@1.0.3:
     resolution: {integrity: sha512-m7pfjCnA838diXnSrEZACujNEykcvzEunBFZqzkJvdQ2+rrxJmAOZyXr9IxD7Mfly9AlR45RSzKCiRTLN5b3Lg==}
     dev: true
 
-  /zilla-util@1.0.10:
-    resolution: {integrity: sha512-azYGaxQSRYEOi1yjhCcxBOWuQJqd/0wBJ+QNAX0SwWjYu3Ckyw2K0OvSgdWFHFdILKI7e9PvRECT6u4nDeEsHw==}
+  /zilla-util@1.0.12:
+    resolution: {integrity: sha512-/5mK34KsZR/OpEDOhsWNviCq4cKYHg/r5+kW0NskAtWifq62jhTxxlvTeVTGQSyMUrz7J9ir16oS9dk0uIKGww==}
     dev: true
